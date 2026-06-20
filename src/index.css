@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────────────
+   Design tokens — monochrome institutional palette, light/dark via .dark
+   ───────────────────────────────────────────────────────────────────── */
+:root {
+  --bg: #fafafa;
+  --bg-elev: #ffffff;
+  --bg-sunk: #f4f4f5;
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+  --fg: #18181b;
+  --fg-muted: #71717a;
+  --fg-subtle: #a1a1aa;
+  --accent: #f59e0b;
+  --pos: #10b981;
+  --neg: #ef4444;
+  --info: #3b82f6;
+}
+
+.dark {
+  --bg: #0a0a0b;
+  --bg-elev: #111113;
+  --bg-sunk: #161618;
+  --border: #1f1f23;
+  --border-strong: #2a2a30;
+  --fg: #fafafa;
+  --fg-muted: #71717a;
+  --fg-subtle: #52525b;
+  --accent: #f59e0b;
+  --pos: #10b981;
+  --neg: #ef4444;
+  --info: #3b82f6;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-feature-settings: 'cv11', 'ss01', 'ss03';
+}
+
+.mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ─── tokens reused as classes ─────────────────────────────────────── */
+.surface {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+}
+.surface-sunk {
+  background: var(--bg-sunk);
+  border: 1px solid var(--border);
+}
+.border-token {
+  border-color: var(--border);
+}
+.border-strong-token {
+  border-color: var(--border-strong);
+}
+.text-muted {
+  color: var(--fg-muted);
+}
+.text-subtle {
+  color: var(--fg-subtle);
+}
+.text-pos {
+  color: var(--pos);
+}
+.text-neg {
+  color: var(--neg);
+}
+.text-accent {
+  color: var(--accent);
+}
+.bg-accent {
+  background: var(--accent);
+}
+.ring-accent {
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.hatch {
+  background-image: repeating-linear-gradient(45deg, var(--border) 0 1px, transparent 1px 6px);
+}
+
+/* ─── tiny animations ──────────────────────────────────────────────── */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+
+@keyframes blink-cursor {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.blink {
+  animation: blink-cursor 1s steps(1) infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ─── kbd chip ─────────────────────────────────────────────────────── */
+.kbd {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 1px 5px;
+  border: 1px solid var(--border-strong);
+  border-radius: 3px;
+  color: var(--fg-muted);
+  background: var(--bg-sunk);
+}
+
+/* ─── fancy hover ──────────────────────────────────────────────────── */
+.row-hover:hover {
+  background: var(--bg-sunk);
+}
+
+/* prevent Tailwind reset of focus ring color */
+*:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 1px;
+}
+
+::selection {
+  background: var(--accent);
+  color: #0a0a0b;
+}
