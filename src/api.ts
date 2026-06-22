@@ -3,6 +3,7 @@
 
 import type { Bloqueo, Mercados, Noticia, Evento, Fuente, Kpi, ExternoData } from './types';
 import { HISTORY, PERIODICIDAD, sparkFrom } from './data/series.ts';
+import { EXTERNO } from './data/mockData';
 
 const BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:5174';
 
@@ -53,7 +54,16 @@ export const api = {
   indicadores: (signal?: AbortSignal) => get<ApiKpi[]>('/api/indicadores', signal),
   bloqueos: (signal?: AbortSignal) => get<BloqueosResponse>('/api/bloqueos', signal),
   mercados: (signal?: AbortSignal) => get<Mercados>('/api/mercados', signal),
-  externo: (signal?: AbortSignal) => get<ExternoData>('/api/externo', signal),
+  externo: async (signal?: AbortSignal): Promise<ExternoData> => {
+    // El API aún no sirve `analitica` (indicadores macro de la revisión de economista);
+    // si falta, se rellena desde el bundle validado —igual que las series históricas—
+    // para que el panel Externo nunca quede sin datos ni rompa la app.
+    const data = await get<Omit<ExternoData, 'analitica'> & { analitica?: ExternoData['analitica'] }>(
+      '/api/externo',
+      signal,
+    );
+    return { ...data, analitica: data.analitica ?? EXTERNO.analitica };
+  },
   noticias: (signal?: AbortSignal) => get<Noticia[]>('/api/noticias', signal),
   noticia: (codigo: string) => get<Noticia>(`/api/noticias/${codigo}`),
   eventos: (signal?: AbortSignal) => get<Evento[]>('/api/eventos', signal),
