@@ -70,6 +70,7 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
   }, [bloqueos, sort]);
 
   const deptCount = new Set(bloqueos.map((b) => b.dept)).size;
+  const resuelto = bloqueos.length === 0;
 
   // cruce bloqueos × ganador del balotaje
   const cross = useMemo(() => {
@@ -94,9 +95,9 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
         title="Bloqueos × mapa electoral"
         right={
           <Fragment>
-            <span className="text-neg pulse-dot">●</span>
+            <span className={resuelto ? 'text-pos' : 'text-neg pulse-dot'}>●</span>
             <span>
-              {BLOQUEOS_INFO.total} activos · {deptCount} dptos.
+              {resuelto ? 'sin bloqueos activos' : `${BLOQUEOS_INFO.total} activos · ${deptCount} dptos.`}
             </span>
           </Fragment>
         }
@@ -210,11 +211,19 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
                 </div>
               </div>
             ) : layer === 'pres2025' ? (
-              <div>
-                <span className="text-fg mono text-[12px]">{cross.paz}/{cross.total}</span> bloqueos ({pazPct}%) caen
-                en departamentos que <span className="text-accent">Paz ganó</span> el balotaje. La base andina que lo
-                eligió —La Paz, Cochabamba, Oruro, Potosí— hoy exige su renuncia.
-              </div>
+              resuelto ? (
+                <div>
+                  Conflicto <span className="text-pos">resuelto</span>: la ABC declaró las vías libres el 23-jun
+                  (54 días, pico 93). La base andina que eligió a <span className="text-accent">Paz</span>
+                  {' '}—La Paz, Cochabamba, Oruro, Potosí— encabezó la protesta que exigió su renuncia.
+                </div>
+              ) : (
+                <div>
+                  <span className="text-fg mono text-[12px]">{cross.paz}/{cross.total}</span> bloqueos ({pazPct}%) caen
+                  en departamentos que <span className="text-accent">Paz ganó</span> el balotaje. La base andina que lo
+                  eligió —La Paz, Cochabamba, Oruro, Potosí— hoy exige su renuncia.
+                </div>
+              )
             ) : layer === 'municipal' ? (
               <div>
                 Subnacionales 1ª v. {ELEC_NACIONAL.muniFecha}: las 9 capitales las ganaron <span className="text-accent">partidos regionales</span> (ni MAS ni PDC). Poder local fragmentado; el conflicto es corporativo (cocaleros, COB, Túpac Katari), no municipal.
@@ -232,6 +241,11 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
                     Anillos = bloqueos. Rueda para acercar, arrastra para mover.
                   </>
                 )}
+              </div>
+            ) : resuelto ? (
+              <div>
+                <span className="text-pos">RVF expedita</span> · 0 puntos activos al {BLOQUEOS_INFO.asof}.
+                {' '}Pico {BLOQUEOS_INFO.pico} ({BLOQUEOS_INFO.picoFecha}). {BLOQUEOS_INFO.nota}
               </div>
             ) : (
               <div>
@@ -263,6 +277,13 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
             </div>
           </div>
           <div className="overflow-y-auto scrollbar-thin flex-1">
+            {resuelto && (
+              <div className="px-3 py-6 text-center text-[11px] text-muted leading-snug">
+                Sin bloqueos activos.
+                <br />
+                Red Vial Fundamental expedita (ABC, 23-jun).
+              </div>
+            )}
             {ordered.map((b) => {
               const e = ELEC_BY_ID[deptSlug(b.dept)];
               return (

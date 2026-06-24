@@ -24,6 +24,7 @@ export function BloqueosResumen({ bloqueos, resumen, onSelect, onVerMapa }: Bloq
 
   const maxDept = Math.max(1, ...porDept.map(([, n]) => n));
   const top = useMemo(() => [...bloqueos].sort((a, b) => b.dia - a.dia).slice(0, 5), [bloqueos]);
+  const resuelto = bloqueos.length === 0;
 
   return (
     <Panel className="flex flex-col h-full">
@@ -31,15 +32,33 @@ export function BloqueosResumen({ bloqueos, resumen, onSelect, onVerMapa }: Bloq
         id="B ·"
         title="Bloqueos · resumen"
         right={
-          <Fragment>
-            <span className="text-neg pulse-dot">●</span>
-            <span>
-              {resumen.activos} activos · {resumen.departamentos} dptos.
-            </span>
-          </Fragment>
+          resuelto ? (
+            <Fragment>
+              <span className="text-pos">●</span>
+              <span>sin bloqueos · RVF expedita</span>
+            </Fragment>
+          ) : (
+            <Fragment>
+              <span className="text-neg pulse-dot">●</span>
+              <span>
+                {resumen.activos} activos · {resumen.departamentos} dptos.
+              </span>
+            </Fragment>
+          )
         }
       />
       <div className="p-3 flex flex-col gap-3 flex-1 min-h-0">
+        {resuelto ? (
+          <div className="flex-1 min-h-0 flex flex-col items-center justify-center text-center gap-2">
+            <span className="text-pos text-2xl leading-none">✓</span>
+            <div className="text-[13px] text-fg">Red Vial Fundamental expedita</div>
+            <div className="text-[11px] text-muted leading-snug max-w-[240px]">
+              La ABC declaró las carreteras libres de bloqueos el 23-jun, tras 54 días de
+              conflicto (pico de 93 puntos el 8-jun).
+            </div>
+          </div>
+        ) : (
+        <Fragment>
         {/* barras por departamento */}
         <div className="space-y-1.5">
           {porDept.map(([dept, n]) => (
@@ -79,6 +98,8 @@ export function BloqueosResumen({ bloqueos, resumen, onSelect, onVerMapa }: Bloq
             ))}
           </div>
         </div>
+        </Fragment>
+        )}
 
         <button
           onClick={onVerMapa}
