@@ -3,6 +3,7 @@ import { Panel } from '../primitives/Panel';
 import { SectionTitle } from '../primitives/SectionTitle';
 import { Tag } from '../primitives/Tag';
 import { BoliviaMap } from '../BoliviaMap';
+import { BloqueosHistoricoChart } from '../charts/BloqueosHistoricoChart';
 import { deptSlug } from '../../data/boliviaGeo';
 import { ELEC_BY_ID, CAND_LABEL, ELEC_NACIONAL, PARTIDO_COLOR_2025, PARTIDO_LABEL_2025 } from '../../data/elecciones';
 import { loadLocalidades, GRANULARIDADES, type Granularidad } from '../../data/localidadesLoader';
@@ -41,6 +42,7 @@ const Sw = ({ color, op = 1 }: { color: string; op?: number }) => (
 export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosPanelProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [sort, setSort] = useState<SortKey>('antig');
+  const [view, setView] = useState<'mapa' | 'historico'>('mapa');
   const [layer, setLayer] = useState<MapLayer>('pres2025');
   const [granularidad, setGranularidad] = useState<Granularidad>('municipio');
   const [locData, setLocData] = useState<LocPunto[]>([]);
@@ -92,16 +94,38 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
     <Panel className="flex flex-col h-full">
       <SectionTitle
         id="B ·"
-        title="Bloqueos × mapa electoral"
+        title={view === 'historico' ? 'Bloqueos · histórico diario' : 'Bloqueos × mapa electoral'}
         right={
           <Fragment>
-            <span className={resuelto ? 'text-pos' : 'text-neg pulse-dot'}>●</span>
-            <span>
-              {resuelto ? 'sin bloqueos activos' : `${BLOQUEOS_INFO.total} activos · ${deptCount} dptos.`}
-            </span>
+            <div className="flex gap-1 mr-1">
+              {(['mapa', 'historico'] as const).map((v) => (
+                <button
+                  key={v}
+                  onClick={() => setView(v)}
+                  className={`mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-[3px] border ${
+                    view === v ? 'border-accent text-accent' : 'border-token text-subtle hover:text-muted'
+                  }`}
+                >
+                  {v === 'mapa' ? 'Mapa' : 'Histórico'}
+                </button>
+              ))}
+            </div>
+            {view === 'mapa' && (
+              <Fragment>
+                <span className={resuelto ? 'text-pos' : 'text-neg pulse-dot'}>●</span>
+                <span>
+                  {resuelto ? 'sin bloqueos activos' : `${BLOQUEOS_INFO.total} activos · ${deptCount} dptos.`}
+                </span>
+              </Fragment>
+            )}
           </Fragment>
         }
       />
+      {view === 'historico' ? (
+        <div className="p-3 md:p-6 flex flex-col justify-center min-h-[320px] md:h-[470px]">
+          <BloqueosHistoricoChart />
+        </div>
+      ) : (
       <div className="flex flex-col md:flex-row min-h-0 md:h-[470px]">
         {/* mapa */}
         <div className="relative flex-1 min-h-[320px] md:min-h-0 p-3 md:p-6" style={{ minWidth: 0 }}>
@@ -312,6 +336,7 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
           </div>
         </div>
       </div>
+      )}
     </Panel>
   );
 }
