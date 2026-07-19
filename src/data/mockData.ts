@@ -8,7 +8,7 @@
 // negociación con el FMI en curso. Reemplazar por ingesta en vivo (// TODO).
 
 import type {
-  Kpi, Bloqueo, Mercados, Noticia, Evento, Fuente, ExternoData,
+  Kpi, Bloqueo, Mercados, Noticia, Evento, Fuente, ExternoData, CambiarioData,
 } from '../types';
 import { HISTORY, PERIODICIDAD, sparkFrom } from './series.ts';
 
@@ -320,6 +320,58 @@ export const EXTERNO: ExternoData = {
     fmiNota: 'Programa EFF. Misión en La Paz (17-18 jul) reunida con Gobierno y empresarios; sin acuerdo firmado. Monto en discusión ~USD 3.000-3.300 M (Paz mencionó hasta 5.000). Condiciones: reducir déficit, unificación cambiaria (ya en marcha) y reforma de subvención a combustibles. Nota: la cuenta corriente giró a superávit (+USD 783 M) en 1T-2026.',
     source: 'BCB · INE · MEFP · FMI (vía prensa)',
   },
+};
+
+// ─────────────────────────────────────────────────────────────────────
+// MÓDULO G — Monitor cambiario (metadatos del régimen flexible)
+// Las cotizaciones vivas salen de los KPIs usdbob_* y sus series diarias
+// (src/data/series.ts); esto aporta régimen, cronología y lectura.
+// ─────────────────────────────────────────────────────────────────────
+export const CAMBIARIO: CambiarioData = {
+  fijoValor: 6.96,
+  fijoDesde: 'nov-2011',
+  flexDesde: '29-jun-2026',
+  reglas: [
+    'El BCB publica el TCO cada día hábil a las 20:00, vigente la jornada siguiente.',
+    'TCO = promedio ponderado de las compras de dólares de la banca (00:00–17:00).',
+    'El precio de venta al público tiene tope en el TCO + Bs 0,10.',
+    'Sustituye al esquema de oficial fijo (Bs 6,96) + dólar referencial: unifica el mercado.',
+  ],
+  hitos: [
+    { etiqueta: '26 jun', titulo: 'RM 245: fin del tipo de cambio fijo de Bs 6,96 (vigente desde 2011)', tono: 'neg' },
+    { etiqueta: '29 jun', titulo: 'Arranca el TCO flexible en Bs 9,73; el referencial de venta pasa a TCO + Bs 0,10', tono: 'accent' },
+    { etiqueta: '09 jul', titulo: 'El TCO supera Bs 10 por primera vez en la cotización oficial', tono: 'neg' },
+    { etiqueta: '13 jul', titulo: 'DS 5652: congela combustibles y ata el subsidio al umbral de Bs 10,40', tono: 'neutral' },
+    { etiqueta: '17 jul', titulo: 'Misión del FMI en La Paz; el TCO cierra la semana en Bs 10,85', tono: 'accent' },
+  ],
+  umbralCombustible: 10.4003,
+  presion: {
+    rinTotal: 4547,
+    rinLiquidas: 898,
+    rinEfectivaJul: 3600,
+    rinLiquidasJul: 671,
+    coberturaDivisas: '~0,9 mes',
+    nota: 'RIN 31-may: USD 4.547 M, pero ~79% es oro y solo ~USD 898 M son divisas líquidas. El Programa Monetario del BCB registra un drenaje de ~USD 525 M en junio (combustibles, intervención y deuda): la RIN efectiva de julio se estima en ~USD 3.600 M con ~USD 671 M líquidos. Es la raíz de la presión al alza del TCO.',
+  },
+  lectura: [
+    {
+      titulo: 'Es unificación, no flotación limpia',
+      texto: 'El TCO sinceró el oficial y cerró la brecha con el paralelo (de ~42% a ≈0), pero el BCB mantiene un tope de venta (TCO + Bs 0,10): sigue siendo un tipo de cambio administrado, no una flotación libre.',
+    },
+    {
+      titulo: 'El traspaso a precios es el riesgo a vigilar',
+      texto: 'El oficial se depreció ~56% frente al viejo fijo. El IPC interanual bajó a 9,2% en junio por efecto base, pero un TCO que sigue subiendo presiona el precio de los importados: el pass-through es el principal riesgo inflacionario del segundo semestre.',
+    },
+    {
+      titulo: 'La subvención de combustibles ahora es variable',
+      texto: 'El DS 5652 fija que el Estado solo subsidia cuando el TCO supera Bs 10,40 (umbral ya cruzado). El diferencial de importación lo cubre el TGN (hasta Bs 1.000 M) y se habilitó importación privada a precio de mercado: el subsidio dejó de ser un precio fijo para volverse una cuña fiscal que crece con el dólar.',
+    },
+    {
+      titulo: 'El ancla que falta es el FMI',
+      texto: 'La unificación cambiaria es una de las condiciones del programa EFF en negociación (~USD 3.000-3.300 M). Sin ese desembolso y con divisas líquidas por debajo de USD 1.000 M, la presión sobre el TCO es estructural, no coyuntural.',
+    },
+  ],
+  source: 'BCB · MEFP · INE · FMI (vía prensa) · elaboración propia',
 };
 
 // ─────────────────────────────────────────────────────────────────────

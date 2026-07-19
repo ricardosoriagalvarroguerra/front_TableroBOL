@@ -12,6 +12,7 @@ import { BloqueosResumen } from './components/modules/BloqueosResumen';
 import { MercadosPanel } from './components/modules/MercadosPanel';
 import { CommoditiesPanel } from './components/modules/CommoditiesPanel';
 import { ExternoPanel } from './components/modules/ExternoPanel';
+import { CambiarioPanel } from './components/modules/CambiarioPanel';
 import { NewsPanel } from './components/modules/NewsPanel';
 import { CalendarioPanel } from './components/modules/CalendarioPanel';
 import { HealthFooter } from './components/modules/HealthFooter';
@@ -22,7 +23,7 @@ import { useDashboardData } from './useDashboardData';
 import { api } from './api';
 import type { Kpi, Noticia, Theme } from './types';
 
-type TabId = 'panorama' | 'bloqueos' | 'externo' | 'mercados';
+type TabId = 'panorama' | 'cambiario' | 'bloqueos' | 'externo' | 'mercados';
 
 export default function App() {
   const { indicadores, bloqueos, resumen, mercados, externo, noticias, eventos, fuentes, source, reload } =
@@ -137,6 +138,13 @@ export default function App() {
   const tabs: TabDef[] = [
     { id: 'panorama', label: 'Panorama' },
     {
+      id: 'cambiario',
+      label: 'Cambiario',
+      badge: byId['usdbob_oficial'] ? (
+        <span className="mono text-[9px] text-accent">{byId['usdbob_oficial'].fmt(byId['usdbob_oficial'].value)}</span>
+      ) : undefined,
+    },
+    {
       id: 'bloqueos',
       label: 'Bloqueos',
       badge: <span className="mono text-[9px] text-neg">{resumen.activos}</span>,
@@ -232,6 +240,14 @@ export default function App() {
               </div>
               <div className="col-span-12">
                 <CalendarioPanel eventos={eventos} />
+              </div>
+            </section>
+          )}
+
+          {tab === 'cambiario' && (
+            <section className="grid gap-2 grid-cols-12">
+              <div className="col-span-12">
+                <CambiarioPanel indicadores={indicadores} onOpen={setOpenKpi} />
               </div>
             </section>
           )}

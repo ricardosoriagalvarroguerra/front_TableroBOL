@@ -231,3 +231,42 @@ export interface Fuente {
   status: FuenteStatus;
   last: string;
 }
+
+// ─── MÓDULO G — Monitor cambiario (régimen flexible desde 29-jun-2026) ──
+/** Un hito de la cronología del cambio de régimen cambiario. */
+export interface CambiarioHito {
+  etiqueta: string; // fecha corta mostrada, p.ej. "26 jun"
+  titulo: string; // qué ocurrió
+  tono: Tone; // color del marcador
+}
+
+/** Un bloque de "lectura" cualitativa del economista. */
+export interface CambiarioLectura {
+  titulo: string;
+  texto: string;
+}
+
+/**
+ * Metadatos del régimen cambiario para el monitor dedicado. Las cotizaciones
+ * VIVAS (oficial/paralelo/brecha/VRD) vienen de los KPIs `usdbob_*` y sus series
+ * diarias en src/data/series.ts; este objeto aporta el contexto de régimen, las
+ * reglas del TCO, la cronología de hitos, la presión estructural y la lectura.
+ */
+export interface CambiarioData {
+  fijoValor: number; // 6.96 — antiguo tipo fijo
+  fijoDesde: string; // "nov-2011"
+  flexDesde: string; // "29-jun-2026"
+  reglas: string[]; // reglas de cálculo/publicación del TCO
+  hitos: CambiarioHito[]; // cronología del cambio de régimen
+  umbralCombustible: number; // 10.4003 — umbral del subsidio (DS 5652)
+  presion: {
+    rinTotal: number; // RIN oficial última, USD M
+    rinLiquidas: number; // divisas líquidas de la RIN, USD M
+    rinEfectivaJul: number; // estimación de RIN efectiva en julio, USD M
+    rinLiquidasJul: number; // divisas líquidas estimadas en julio, USD M
+    coberturaDivisas: string; // cobertura de importaciones en divisas
+    nota: string;
+  };
+  lectura: CambiarioLectura[]; // lectura cualitativa del economista
+  source: string;
+}
