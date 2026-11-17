@@ -97,12 +97,12 @@ export function BloqueosHistoricoChart() {
       {/* leyenda */}
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         {SERIES_HIST.map((s) => (
-          <div key={s.key} className="flex items-center gap-1.5 mono text-[9px] uppercase tracking-wider text-muted">
+          <div key={s.key} className="flex items-center gap-1.5 text-[11px]  text-muted">
             <span className="inline-block w-3 h-[2px]" style={{ background: s.color }} />
             {s.label}
           </div>
         ))}
-        <span className="mono text-[9px] uppercase tracking-wider text-subtle ml-auto">
+        <span className="eyebrow ml-auto">
           {BLOQUEOS_HISTORICO_META.reportes} reportes · pico {BLOQUEOS_HISTORICO_META.pico} ({BLOQUEOS_HISTORICO_META.picoFecha})
         </span>
       </div>

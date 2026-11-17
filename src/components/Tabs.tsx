@@ -4,6 +4,8 @@ export interface TabDef {
   id: string;
   label: string;
   badge?: ReactNode;
+  /** Código corto del módulo (p. ej. «AG»). */
+  code?: string;
 }
 
 interface TabsProps {
@@ -14,25 +16,31 @@ interface TabsProps {
 
 export function Tabs({ tabs, active, onChange }: TabsProps) {
   return (
-    <div className="sticky top-12 z-20 surface border-l-0 border-r-0 border-t-0">
-      <div className="flex items-center gap-0.5 px-2 sm:px-3 overflow-x-auto scrollbar-thin">
-        {tabs.map((t) => {
+    <nav
+      className="sticky top-14 z-20 backdrop-blur"
+      style={{ background: 'color-mix(in srgb, var(--bg) 85%, transparent)', borderBottom: '1px solid var(--border)' }}
+      aria-label="Módulos del tablero"
+    >
+      <div className="flex items-center gap-1 px-4 sm:px-6 h-12 overflow-x-auto scrollbar-thin" role="tablist">
+        {tabs.map((t, i) => {
           const on = active === t.id;
           return (
             <button
               key={t.id}
+              role="tab"
+              aria-selected={on}
               onClick={() => onChange(t.id)}
-              className={`relative mono text-[10px] uppercase tracking-[0.14em] px-3 h-9 whitespace-nowrap flex items-center gap-1.5 transition-colors ${
-                on ? '' : 'text-muted hover:text-accent'
+              title={`${t.label} [${i + 1}]`}
+              className={`relative h-8 px-3 rounded-[7px] whitespace-nowrap flex items-center gap-2 text-[12.5px] transition-colors ${
+                on ? 'font-medium' : 'text-muted hover:text-[color:var(--fg)]'
               }`}
+              style={on ? { background: 'var(--bg-sunk)' } : undefined}
             >
               {t.label}
-              {t.badge}
-              {on && <span className="absolute left-2 right-2 -bottom-px h-[2px] bg-accent rounded-full" />}
             </button>
           );
         })}
       </div>
-    </div>
+    </nav>
   );
 }

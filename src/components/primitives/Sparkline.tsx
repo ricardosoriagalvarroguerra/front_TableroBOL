@@ -1,7 +1,6 @@
-// Sparkline de las tarjetas de indicadores — construido con D3 (d3-scale + d3-shape).
+import { useMemo } from 'react';
 import { useTheme } from '../../theme';
-import { scaleLinear } from 'd3-scale';
-import { line as d3line, area as d3area, curveMonotoneX } from 'd3-shape';
+import { buildLineChart } from '../../charts/line';
 import type { Sentiment } from '../../types';
 
 interface SparklineProps {
@@ -12,42 +11,19 @@ interface SparklineProps {
   filled?: boolean;
 }
 
-export function Sparkline({
-  data,
-  width = 110,
-  height = 24,
-  sentiment = 'neutral',
-  filled = true,
-}: SparklineProps) {
+const colorOf = (s: Sentiment): string =>
+  s === 'pos' ? 'var(--pos)' : s === 'neg' ? 'var(--neg)' : s === 'accent' ? 'var(--accent)' : 'var(--fg-muted)';
+
+/** Sparkline sobrio: línea neutra; sólo el último punto lleva el color de la tendencia. */
+export function Sparkline({ data, width = 110, height = 24, sentiment = 'neutral' }: SparklineProps) {
   const theme = useTheme();
-  if (!data || !data.length) return null;
-
-  const x = scaleLinear().domain([0, Math.max(1, data.length - 1)]).range([0, width]);
-  const min = Math.min(...data);
-  const max = Math.max(...data);
-  const y = scaleLinear()
-    .domain(min === max ? [min - 1, max + 1] : [min, max])
-    .range([height - 1, 1]);
-
-  const lineGen = d3line<number>().x((_, i) => x(i)).y((v) => y(v)).curve(curveMonotoneX);
-  const areaGen = d3area<number>().x((_, i) => x(i)).y0(height).y1((v) => y(v)).curve(curveMonotoneX);
-  const d = lineGen(data) ?? '';
-  const a = areaGen(data) ?? '';
-
-  const color =
-    sentiment === 'pos'
-      ? 'var(--pos)'
-      : sentiment === 'neg'
-        ? 'var(--neg)'
-        : sentiment === 'accent'
-          ? 'var(--accent)'
-          : 'var(--fg-muted)';
-
+  const chart = useMemo(() => buildLineChart(data, width, height, 2), [data, width, height]);
+  if (!data || data.length < 2) return <svg width={width} height={height} />;
+  const last = chart.points[chart.points.length - 1];
   return (
     <svg key={theme} width={width} height={height} className="block" style={{ overflow: 'visible' }}>
-      {filled && <path d={a} opacity="0.08" style={{ fill: color }} />}
-      <path d={d} strokeWidth="1" style={{ fill: 'none', stroke: color }} />
-      <circle cx={x(data.length - 1)} cy={y(data[data.length - 1])} r="1.6" style={{ fill: color }} />
+      <path d={chart.line} strokeWidth="1.25" style={{ fill: 'none', stroke: 'var(--fg-subtle)' }} />
+      <circle cx={last[0]} cy={last[1]} r="2" style={{ fill: colorOf(sentiment) }} />
     </svg>
   );
 }

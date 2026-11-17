@@ -1,9 +1,9 @@
 // Cliente del backend (Fastify). Las respuestas ya vienen con la forma que
 // consumen los componentes; este módulo sólo tipa y centraliza los fetch.
 
-import type { Bloqueo, Mercados, Noticia, Evento, Fuente, Kpi, ExternoData } from './types';
+import type { Bloqueo, Mercados, Noticia, Evento, Fuente, Kpi, ExternoData, AnalisisData } from './types';
 import { HISTORY, PERIODICIDAD, sparkFrom } from './data/series.ts';
-import { EXTERNO } from './data/mockData';
+import { EXTERNO, HISTORICO, MERCADOS } from './data/mockData';
 
 const BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:5174';
 
@@ -23,8 +23,9 @@ export interface ApiKpi extends Omit<Kpi, 'fmt' | 'value' | 'unit' | 'def' | 'so
 }
 
 function makeFmt(codigo: string, decimales: number): (v: number) => string {
-  if (codigo === 'rin') return (v) => v.toLocaleString('es-BO');
-  return (v) => v.toFixed(decimales);
+  // 0 decimales → miles con punto (RIN, salario, EMBI); resto → coma decimal (es-BO).
+  if (decimales === 0 || codigo === 'rin') return (v) => Math.round(v).toLocaleString('es-BO');
+  return (v) => v.toFixed(decimales).replace('.', ',');
 }
 
 export function toKpi(k: ApiKpi): Kpi {
@@ -42,6 +43,9 @@ export function toKpi(k: ApiKpi): Kpi {
     periodicidad: PERIODICIDAD[k.id] ?? k.periodicidad,
     history: h && h.length ? h : k.history,
     spark: h && h.length ? sparkFrom(h) : k.spark,
+    // serie anual 2015→hoy: la del API si viene, si no la del bundle
+    historico: k.historico?.length ? k.historico : HISTORICO[k.id]?.serie,
+    historicoNota: k.historicoNota ?? HISTORICO[k.id]?.nota,
   };
 }
 
@@ -53,7 +57,14 @@ export interface BloqueosResponse {
 export const api = {
   indicadores: (signal?: AbortSignal) => get<ApiKpi[]>('/api/indicadores', signal),
   bloqueos: (signal?: AbortSignal) => get<BloqueosResponse>('/api/bloqueos', signal),
-  mercados: (signal?: AbortSignal) => get<Mercados>('/api/mercados', signal),
+  mercados: async (signal?: AbortSignal): Promise<Mercados> => {
+    const data = await get<Mercados>('/api/mercados', signal);
+    return {
+      ...data,
+      cds5y: data.cds5y?.value == null && !data.cds5y?.note ? MERCADOS.cds5y : data.cds5y,
+      ratingsHistoria: data.ratingsHistoria?.length ? data.ratingsHistoria : MERCADOS.ratingsHistoria,
+    };
+  },
   externo: async (signal?: AbortSignal): Promise<ExternoData> => {
     // El API aún no sirve `analitica` (indicadores macro de la revisión de economista);
     // si falta, se rellena desde el bundle validado —igual que las series históricas—
@@ -68,4 +79,5 @@ export const api = {
   noticia: (codigo: string) => get<Noticia>(`/api/noticias/${codigo}`),
   eventos: (signal?: AbortSignal) => get<Evento[]>('/api/eventos', signal),
   fuentes: (signal?: AbortSignal) => get<Fuente[]>('/api/fuentes', signal),
+  analisis: (signal?: AbortSignal) => get<AnalisisData>('/api/analisis', signal),
 };

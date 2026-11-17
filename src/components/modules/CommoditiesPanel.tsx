@@ -16,9 +16,9 @@ const fmtPrecio = (v: number) =>
 export function CommoditiesPanel({ data, onOpen }: CommoditiesPanelProps) {
   return (
     <Panel className="flex flex-col h-full">
-      <SectionTitle id="X ·" title="Commodities · exportación" right={<span>Trading Economics</span>} />
+      <SectionTitle title="Commodities · exportación" right={<span>TE · LME · CBOT · nov 2026</span>} />
       <div className="flex-1 overflow-y-auto scrollbar-thin">
-        <div className="grid grid-cols-12 px-3 pt-2 pb-1.5 mono text-[9px] uppercase tracking-wider text-subtle">
+        <div className="grid grid-cols-12 px-3 pt-2 pb-1.5 eyebrow">
           <div className="col-span-5">Commodity</div>
           <div className="col-span-4 text-right">Precio</div>
           <div className="col-span-3 text-right">Δ mes</div>
@@ -60,7 +60,7 @@ export function CommoditiesPanel({ data, onOpen }: CommoditiesPanelProps) {
         ))}
       </div>
       <div className="px-3 py-2 border-t border-token mono text-[9px] text-subtle leading-snug">
-        Oro: ~95% de las RIN del BCB. Henry Hub es referencia (el gas boliviano se exporta con fórmulas
+        Oro: ~82% de las RIN del BCB (16-oct). Henry Hub es referencia (el gas boliviano se exporta con fórmulas
         indexadas a derivados de petróleo). Clic en cualquier fila para ver su serie histórica.
       </div>
     </Panel>

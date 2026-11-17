@@ -43,7 +43,7 @@ export function NewsModal({ noticia, onClose, onMarcarLeida, leida }: NewsModalP
       >
         {/* meta strip */}
         <div className="px-5 pt-4 pb-3 border-b border-token flex items-start justify-between gap-4">
-          <div className="flex items-center gap-2 flex-wrap mono text-[9px] uppercase tracking-[0.16em] text-subtle">
+          <div className="flex items-center gap-2 flex-wrap text-[11px] text-subtle">
             <span className="text-muted">{noticia.fuente}</span>
             <span>·</span>
             <span style={{ color: tagColor }}>{noticia.tag}</span>
@@ -61,7 +61,7 @@ export function NewsModal({ noticia, onClose, onMarcarLeida, leida }: NewsModalP
           </div>
           <button
             onClick={onClose}
-            className="mono text-[10px] uppercase tracking-wider text-muted hover:text-accent whitespace-nowrap shrink-0"
+            className="text-[11px] text-muted hover:text-accent whitespace-nowrap shrink-0"
           >
             cerrar [esc]
           </button>
@@ -81,14 +81,14 @@ export function NewsModal({ noticia, onClose, onMarcarLeida, leida }: NewsModalP
 
           {noticia.keywords && noticia.keywords.length > 0 && (
             <div className="mt-5">
-              <div className="mono text-[9px] uppercase tracking-wider text-subtle mb-1.5">
+              <div className="eyebrow mb-1.5">
                 Términos clave
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {noticia.keywords.map((k) => (
                   <span
                     key={k}
-                    className="mono text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded-[3px] surface-sunk text-muted"
+                    className="text-[11px] px-1.5 py-0.5 rounded-[3px] surface-sunk text-muted"
                   >
                     {k}
                   </span>
@@ -99,7 +99,7 @@ export function NewsModal({ noticia, onClose, onMarcarLeida, leida }: NewsModalP
 
           {noticia.relacionados && noticia.relacionados.length > 0 && (
             <div className="mt-4">
-              <div className="mono text-[9px] uppercase tracking-wider text-subtle mb-1.5">Vinculado a</div>
+              <div className="eyebrow mb-1.5">Vinculado a</div>
               <ul className="space-y-0.5">
                 {noticia.relacionados.map((r) => (
                   <li key={r} className="text-[12px] text-muted flex items-center gap-2">
@@ -121,7 +121,7 @@ export function NewsModal({ noticia, onClose, onMarcarLeida, leida }: NewsModalP
             <button
               onClick={() => onMarcarLeida?.(noticia.id)}
               disabled={leida}
-              className={`mono text-[10px] uppercase tracking-wider px-2 h-7 surface-sunk rounded-[3px] ${
+              className={`text-[11px] px-2 h-7 surface-sunk rounded-[3px] ${
                 leida ? 'text-pos cursor-default' : 'text-muted hover:ring-accent'
               }`}
             >
@@ -132,7 +132,7 @@ export function NewsModal({ noticia, onClose, onMarcarLeida, leida }: NewsModalP
                 href={noticia.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mono text-[10px] uppercase tracking-wider px-2 h-7 rounded-[3px] hover:ring-accent flex items-center"
+                className="text-[11px] px-2 h-7 rounded-[3px] hover:ring-accent flex items-center"
                 style={{ background: 'var(--accent)', color: '#0A0A0B' }}
               >
                 Abrir fuente ↗
@@ -140,7 +140,7 @@ export function NewsModal({ noticia, onClose, onMarcarLeida, leida }: NewsModalP
             ) : (
               <button
                 disabled
-                className="mono text-[10px] uppercase tracking-wider px-2 h-7 rounded-[3px] surface-sunk text-subtle cursor-not-allowed"
+                className="text-[11px] px-2 h-7 rounded-[3px] surface-sunk text-subtle cursor-not-allowed"
               >
                 Sin enlace
               </button>

@@ -102,7 +102,7 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
                 <button
                   key={v}
                   onClick={() => setView(v)}
-                  className={`mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-[3px] border ${
+                  className={`text-[11px]  px-1.5 py-0.5 rounded-[3px] border ${
                     view === v ? 'border-accent text-accent' : 'border-token text-subtle hover:text-muted'
                   }`}
                 >
@@ -135,7 +135,7 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
               <button
                 key={l.id}
                 onClick={() => setLayer(l.id)}
-                className={`mono text-[9px] uppercase tracking-wider px-2 py-1 rounded-[4px] border backdrop-blur ${
+                className={`text-[11px]  px-2 py-1 rounded-[4px] border backdrop-blur ${
                   layer === l.id
                     ? 'border-accent text-accent'
                     : 'border-token text-subtle hover:text-muted'
@@ -189,12 +189,12 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
           {/* selector de granularidad (solo en la capa de localidades) */}
           {layer === 'localidades' && (
             <div className="absolute top-2 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1">
-              <span className="mono text-[9px] uppercase tracking-wider text-subtle mr-0.5">ver por</span>
+              <span className="eyebrow mr-0.5">ver por</span>
               {GRANULARIDADES.map((g) => (
                 <button
                   key={g.id}
                   onClick={() => setGranularidad(g.id)}
-                  className={`mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-[4px] border ${
+                  className={`text-[11px]  px-1.5 py-0.5 rounded-[4px] border ${
                     granularidad === g.id ? 'border-accent text-accent' : 'border-token text-subtle hover:text-muted'
                   }`}
                   style={{ background: 'color-mix(in srgb, var(--bg-elev) 80%, transparent)' }}
@@ -223,7 +223,7 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
             {hoverE ? (
               <div className="space-y-0.5">
                 <div className="flex items-center justify-between">
-                  <span className="mono text-[10px] uppercase tracking-wider text-fg">{hoverE.nombre}</span>
+                  <span className="text-[11px]  text-fg">{hoverE.nombre}</span>
                   <span className="mono text-[9px] text-neg">{hoverCount} bloqueo{hoverCount === 1 ? '' : 's'}</span>
                 </div>
                 <div className="text-muted">
@@ -245,7 +245,7 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
                 <div>
                   <span className="text-fg mono text-[12px]">{cross.paz}/{cross.total}</span> bloqueos ({pazPct}%) caen
                   en departamentos que <span className="text-accent">Paz ganó</span> el balotaje. La base andina que lo
-                  eligió —La Paz, Cochabamba, Oruro, Potosí— hoy exige su renuncia.
+                  eligió —La Paz, Cochabamba, Oruro, Potosí— exigió su renuncia en mayo–junio.
                 </div>
               )
             ) : layer === 'municipal' ? (
@@ -283,13 +283,13 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
         {/* listado */}
         <div className="w-full md:w-[280px] lg:w-[300px] flex flex-col border-t md:border-t-0 md:border-l border-token shrink-0 max-h-[280px] md:max-h-none">
           <div className="px-3 h-8 flex items-center justify-between border-b border-token shrink-0">
-            <div className="mono text-[9px] uppercase tracking-wider text-subtle">Listado</div>
+            <div className="eyebrow">Listado</div>
             <div className="flex gap-1">
               {(['antig', 'impacto'] as SortKey[]).map((s) => (
                 <button
                   key={s}
                   onClick={() => setSort(s)}
-                  className={`mono text-[9px] uppercase tracking-wider px-1.5 py-0.5 rounded-[3px] border ${
+                  className={`text-[11px]  px-1.5 py-0.5 rounded-[3px] border ${
                     sort === s
                       ? 'border-strong-token'
                       : 'border-transparent text-muted hover:border-token'
@@ -303,9 +303,9 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
           <div className="overflow-y-auto scrollbar-thin flex-1">
             {resuelto && (
               <div className="px-3 py-6 text-center text-[11px] text-muted leading-snug">
-                Sin bloqueos activos.
+                Sin bloqueos nacionales activos.
                 <br />
-                Red Vial Fundamental expedita (ABC, 23-jun).
+                La ola de mayo–junio está en la vista Histórico.
               </div>
             )}
             {ordered.map((b) => {
@@ -320,13 +320,13 @@ export function BloqueosPanel({ bloqueos, selectedId, setSelectedId }: BloqueosP
                   style={selectedId === b.id ? { background: 'var(--bg-sunk)' } : {}}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="mono text-[10px] text-muted uppercase tracking-wider">{b.dept}</span>
+                    <span className="text-[11px] text-muted ">{b.dept}</span>
                     <Tag tone={severidadTone[b.severidad]}>D{b.dia}</Tag>
                   </div>
                   <div className="text-[12px] leading-tight mt-1">{b.km}</div>
                   <div className="text-[11px] text-muted leading-snug mt-0.5">{b.sector}</div>
                   {e && (
-                    <div className="mono text-[8.5px] text-subtle uppercase tracking-wider mt-0.5">
+                    <div className="eyebrow mt-0.5">
                       balotaje: ganó {e.ro_winner === 'paz' ? 'Paz' : 'Quiroga'}
                     </div>
                   )}

@@ -2,6 +2,7 @@ import { useMemo, Fragment } from 'react';
 import { Panel } from '../primitives/Panel';
 import { SectionTitle } from '../primitives/SectionTitle';
 import { Tag } from '../primitives/Tag';
+import { BLOQUEOS_INFO } from '../../data/mockData';
 import type { Bloqueo, Severidad, Tone } from '../../types';
 
 interface BloqueosResumenProps {
@@ -24,18 +25,17 @@ export function BloqueosResumen({ bloqueos, resumen, onSelect, onVerMapa }: Bloq
 
   const maxDept = Math.max(1, ...porDept.map(([, n]) => n));
   const top = useMemo(() => [...bloqueos].sort((a, b) => b.dia - a.dia).slice(0, 5), [bloqueos]);
-  const resuelto = bloqueos.length === 0;
+  const resuelto = bloqueos.length === 0 || resumen.activos === 0;
 
   return (
     <Panel className="flex flex-col h-full">
       <SectionTitle
-        id="B ·"
-        title="Bloqueos · resumen"
+        title="Conflictividad"
         right={
           resuelto ? (
             <Fragment>
               <span className="text-pos">●</span>
-              <span>sin bloqueos · RVF expedita</span>
+              <span>sin bloqueos nacionales</span>
             </Fragment>
           ) : (
             <Fragment>
@@ -47,15 +47,22 @@ export function BloqueosResumen({ bloqueos, resumen, onSelect, onVerMapa }: Bloq
           )
         }
       />
-      <div className="p-3 flex flex-col gap-3 flex-1 min-h-0">
+      <div className="px-5 py-4 flex flex-col gap-3 flex-1 min-h-0">
         {resuelto ? (
-          <div className="flex-1 min-h-0 flex flex-col items-center justify-center text-center gap-2">
-            <span className="text-pos text-2xl leading-none">✓</span>
-            <div className="text-[13px] text-fg">Red Vial Fundamental expedita</div>
-            <div className="text-[11px] text-muted leading-snug max-w-[240px]">
-              La ABC declaró las carreteras libres de bloqueos el 23-jun, tras 54 días de
-              conflicto (pico de 93 puntos el 8-jun).
+          <div className="flex-1 min-h-0 flex flex-col" title={BLOQUEOS_INFO.nota}>
+            <div className="text-[12px] text-muted pb-2">
+              Red vial expedita desde el 23-jun · pico de {BLOQUEOS_INFO.pico} puntos el {BLOQUEOS_INFO.picoFecha}
             </div>
+            <div className="eyebrow mb-1">Focos recientes</div>
+            <ul className="flex flex-col">
+              {BLOQUEOS_INFO.episodios.map((e) => (
+                <li key={e.fecha + e.titulo} className="flex gap-3 py-2 border-b border-token last:border-b-0">
+                  <span className="mono text-[11px] text-subtle w-[68px] shrink-0">{e.fecha}</span>
+                  <span className="text-[12.5px] leading-snug flex-1">{e.titulo}</span>
+                  <span className="text-[11px] text-subtle shrink-0 hidden sm:inline">{e.lugar}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         ) : (
         <Fragment>
@@ -63,7 +70,7 @@ export function BloqueosResumen({ bloqueos, resumen, onSelect, onVerMapa }: Bloq
         <div className="space-y-1.5">
           {porDept.map(([dept, n]) => (
             <div key={dept} className="flex items-center gap-2">
-              <span className="mono text-[10px] uppercase tracking-wider text-muted w-24 shrink-0 truncate">
+              <span className="text-[11px]  text-muted w-24 shrink-0 truncate">
                 {dept}
               </span>
               <div className="flex-1 surface-sunk rounded-[3px] h-3 overflow-hidden">
@@ -79,7 +86,7 @@ export function BloqueosResumen({ bloqueos, resumen, onSelect, onVerMapa }: Bloq
 
         {/* top por antigüedad */}
         <div className="border-t border-token pt-2 flex-1 min-h-0 overflow-y-auto scrollbar-thin">
-          <div className="mono text-[9px] uppercase tracking-wider text-subtle mb-1.5">
+          <div className="eyebrow mb-1.5">
             Más prolongados
           </div>
           <div className="space-y-1">
@@ -91,7 +98,7 @@ export function BloqueosResumen({ bloqueos, resumen, onSelect, onVerMapa }: Bloq
               >
                 <Tag tone={severidadTone[b.severidad]}>D{b.dia}</Tag>
                 <span className="text-[11px] truncate flex-1">{b.km}</span>
-                <span className="mono text-[9px] text-subtle uppercase tracking-wider shrink-0">
+                <span className="eyebrow shrink-0">
                   {b.dept}
                 </span>
               </button>
@@ -103,9 +110,9 @@ export function BloqueosResumen({ bloqueos, resumen, onSelect, onVerMapa }: Bloq
 
         <button
           onClick={onVerMapa}
-          className="mono text-[10px] uppercase tracking-wider h-8 surface-sunk rounded-[4px] hover:ring-accent text-muted shrink-0"
+          className="text-[11px]  h-8 surface-sunk rounded-[4px] hover:ring-accent text-muted shrink-0"
         >
-          Ver mapa completo →
+          Ver mapa y serie histórica →
         </button>
       </div>
     </Panel>

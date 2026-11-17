@@ -13,11 +13,12 @@ export function KpiCard({ k, onClick }: KpiCardProps) {
   return (
     <button
       onClick={() => onClick && onClick(k)}
-      className="surface rounded-[5px] text-left flex flex-col h-full p-3 hover:ring-accent transition-shadow"
-      style={{ minHeight: 116 }}
+      className="card card-hover text-left flex flex-col h-full p-3.5"
+      style={{ minHeight: 120 }}
+      title={k.def}
     >
-      <div className="flex items-start justify-between">
-        <div className="mono text-[9px] uppercase tracking-[0.14em] text-subtle">{k.label}</div>
+      <div className="flex items-start justify-between gap-2">
+        <div className="text-[11px] text-subtle">{k.label}</div>
         <Delta value={k.delta} label={k.deltaLabel} sentiment={deltaTone(pol, k.delta)} />
       </div>
       <div className="mt-2 flex items-baseline gap-1">
@@ -28,19 +29,15 @@ export function KpiCard({ k, onClick }: KpiCardProps) {
       </div>
       {k.extra && (
         <div className="mt-1.5 flex items-center gap-1.5">
-          <span className="mono text-[9px] uppercase tracking-wider text-subtle">{k.extra.label}</span>
-          <span
-            className={`mono text-[11px] ${
-              k.extra.tone === 'neg' ? 'text-neg' : k.extra.tone === 'pos' ? 'text-pos' : ''
-            }`}
-          >
+          <span className="eyebrow">{k.extra.label}</span>
+          <span className={`mono text-[11px] ${k.extra.tone === 'neg' ? 'text-neg' : k.extra.tone === 'pos' ? 'text-pos' : ''}`}>
             {k.extra.value}
           </span>
         </div>
       )}
       <div className="mt-auto pt-2 flex items-end justify-between">
         <Sparkline data={k.spark} sentiment={trendTone(pol, k.spark)} width={120} height={22} />
-        <span className="mono text-[9px] text-subtle">{k.asof}</span>
+        <span className="text-[11px] text-subtle">{k.asof}</span>
       </div>
     </button>
   );

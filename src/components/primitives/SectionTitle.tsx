@@ -1,19 +1,19 @@
 import type { ReactNode } from 'react';
 
 interface SectionTitleProps {
-  id: string;
+  /** Código del módulo (se conserva por compatibilidad; no se muestra). */
+  id?: string;
   title: string;
   right?: ReactNode;
+  /** Bajada opcional; se muestra como tooltip para no sumar texto. */
+  sub?: string;
 }
 
-export function SectionTitle({ id, title, right }: SectionTitleProps) {
+export function SectionTitle({ title, right, sub }: SectionTitleProps) {
   return (
-    <div className="flex items-center justify-between px-3 h-8 border-b border-token">
-      <div className="flex items-center gap-2 mono text-[10px] uppercase tracking-[0.14em] text-muted">
-        <span className="text-subtle">{id}</span>
-        <span>{title}</span>
-      </div>
-      <div className="flex items-center gap-2 mono text-[10px] text-subtle">{right}</div>
+    <div className="flex items-center justify-between gap-3 px-5 h-12 border-b border-token" title={sub}>
+      <span className="text-[13px] font-medium truncate">{title}</span>
+      <div className="flex items-center gap-2 text-[11px] text-subtle shrink-0">{right}</div>
     </div>
   );
 }

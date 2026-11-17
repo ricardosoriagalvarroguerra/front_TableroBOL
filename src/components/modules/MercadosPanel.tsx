@@ -21,11 +21,11 @@ const BONO_DEF: Record<string, string> = {
 export function MercadosPanel({ data, onOpen }: MercadosPanelProps) {
   return (
     <Panel className="flex flex-col h-full">
-      <SectionTitle id="C ·" title="Mercados · soberanos" right={<span>USD · NY close</span>} />
+      <SectionTitle title="Mercados · soberanos" right={<span>bonos: último dato verificado jun-2026</span>} />
       <div className="flex-1 overflow-y-auto scrollbar-thin">
         {/* bonds table */}
         <div className="px-3 py-2 border-b border-token">
-          <div className="grid grid-cols-12 mono text-[9px] uppercase tracking-wider text-subtle pb-1.5">
+          <div className="grid grid-cols-12 eyebrow pb-1.5">
             <div className="col-span-4">Bono</div>
             <div className="col-span-2 text-right">Precio</div>
             <div className="col-span-2 text-right">Yield</div>
@@ -84,7 +84,7 @@ export function MercadosPanel({ data, onOpen }: MercadosPanelProps) {
         >
           <div className="flex items-center justify-between">
             <div>
-              <div className="mono text-[9px] uppercase tracking-wider text-subtle">EMBI Bolivia</div>
+              <div className="eyebrow">EMBI Bolivia</div>
               <div className="mt-0.5 flex items-baseline gap-2">
                 <span className="mono text-[22px]">{data.embi.value.toLocaleString('es-BO')}</span>
                 <span className="mono text-[10px] text-subtle">pb</span>
@@ -102,7 +102,7 @@ export function MercadosPanel({ data, onOpen }: MercadosPanelProps) {
         {/* CDS */}
         <div className="px-3 py-2 border-b border-token flex items-center justify-between">
           <div>
-            <div className="mono text-[9px] uppercase tracking-wider text-subtle">CDS 5Y</div>
+            <div className="eyebrow">CDS 5Y</div>
             {data.cds5y.value != null ? (
               <div className="mono text-[16px] mt-0.5">
                 {data.cds5y.value.toLocaleString('es-BO')}
@@ -121,7 +121,7 @@ export function MercadosPanel({ data, onOpen }: MercadosPanelProps) {
 
         {/* ratings */}
         <div className="px-3 py-2 border-b border-token">
-          <div className="mono text-[9px] uppercase tracking-wider text-subtle mb-1.5">Rating soberano</div>
+          <div className="eyebrow mb-1.5">Rating soberano</div>
           <div className="space-y-1">
             {data.ratings.map((r) => (
               <div key={r.agencia} className="flex items-center justify-between text-[11px]">
@@ -129,7 +129,7 @@ export function MercadosPanel({ data, onOpen }: MercadosPanelProps) {
                 <div className="flex items-center gap-2">
                   <span className="mono">{r.rating}</span>
                   <span
-                    className={`mono text-[9px] uppercase tracking-wider ${
+                    className={`text-[11px]  ${
                       r.outlook === 'Negativo' ? 'text-neg' : 'text-muted'
                     }`}
                   >
@@ -144,7 +144,7 @@ export function MercadosPanel({ data, onOpen }: MercadosPanelProps) {
 
         {/* reservas composición */}
         <div className="px-3 py-2">
-          <div className="mono text-[9px] uppercase tracking-wider text-subtle mb-1.5">Composición RIN</div>
+          <div className="eyebrow mb-1.5">Composición RIN</div>
           <div className="flex items-center gap-3">
             <Donut
               size={68}

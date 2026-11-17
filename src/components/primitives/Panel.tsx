@@ -6,5 +6,5 @@ interface PanelProps {
 }
 
 export function Panel({ children, className = '' }: PanelProps) {
-  return <div className={`surface rounded-[5px] overflow-hidden ${className}`}>{children}</div>;
+  return <div className={`card overflow-hidden fade-up ${className}`}>{children}</div>;
 }
