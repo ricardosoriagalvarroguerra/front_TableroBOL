@@ -11,7 +11,7 @@ export const ANALISIS: AnalisisData = {
     bajada:
       'El tipo de cambio flexible unificó el mercado y el FMI, el BID y el Banco Mundial aportan divisas, pero la economía cayó 3,3% en el primer semestre y el retiro de subsidios reaviva la inflación y la protesta.',
     puntos: [
-      'El TCO unificó el mercado (brecha de +2,4%) y FMI, BID y BM comprometen más de USD 3.000 M: bajó el riesgo de crisis cambiaria.',
+      'El TCO unificó el mercado (brecha de ~2%) y FMI, BID y BM comprometen más de USD 3.000 M: bajó el riesgo de crisis cambiaria.',
       'El PIB cayó 3,27% en el 1S y la inflación repunta (7,08% en octubre) tras liberar el diésel.',
       'Diciembre es la prueba: primera revisión del FMI y retiro del subsidio a la gasolina con la COB movilizada.',
       'El auge exportador (+54% ene–sep) sostiene la balanza, pero 82% de la RIN sigue siendo oro.',
@@ -21,12 +21,12 @@ export const ANALISIS: AnalisisData = {
   },
   semaforo: [
     { id: 'precios', dimension: 'Precios', estado: 'neutral', score: 3, tendencia: 'empeora', ancla: 'IPC 7,08% i/a · +2,07% m', lectura: 'La interanual bajó de 20% por efecto base, pero el ritmo mensual volvió a 2% con el diésel y los pasajes.' },
-    { id: 'cambiario', dimension: 'Cambiario', estado: 'pos', score: 4, tendencia: 'estable', ancla: 'TCO 11,67 · brecha +2,4%', lectura: 'Mercado unificado; el TCO oscila en una banda de 11,6–12,2 desde octubre tras la volatilidad de septiembre.' },
+    { id: 'cambiario', dimension: 'Cambiario', estado: 'pos', score: 4, tendencia: 'estable', ancla: 'TCO 11,70 · brecha +2,0%', lectura: 'Mercado unificado; el TCO oscila en una banda de 11,6–12,2 desde octubre tras la volatilidad de septiembre.' },
     { id: 'reservas', dimension: 'Reservas', estado: 'neg', score: 2, tendencia: 'mejora', ancla: 'RIN 3.978 M · divisas 647 M', lectura: 'Suben por compras de oro y el desembolso del FMI, pero las divisas líquidas cubren menos de un mes de importaciones.' },
     { id: 'actividad', dimension: 'Actividad', estado: 'neg', score: 1, tendencia: 'empeora', ancla: 'PIB 1S −3,27% · 2T −5,94%', lectura: 'Recesión profundizada por los bloqueos; FMI y Banco Mundial esperan −3% en 2026 y otra caída en 2027.' },
     { id: 'fiscal', dimension: 'Fiscal', estado: 'neg', score: 2, tendencia: 'mejora', ancla: 'Déficit 2025 −12,2% · meta 26 −9,2%', lectura: 'El ajuste avanza (diésel a paridad, PGE 2027 con −6,7% y sin BCB), pero desde un déficit muy alto.' },
     { id: 'externo', dimension: 'Sector externo', estado: 'pos', score: 4, tendencia: 'mejora', ancla: 'Saldo ene–sep +2.237 M', lectura: 'Exportaciones récord por minería y soya, e importaciones contenidas: la cuenta corriente pasó a superávit.' },
-    { id: 'credito', dimension: 'Crédito soberano', estado: 'neutral', score: 2, tendencia: 'mejora', ancla: 'EMBI 494 pb · Caa2 / CCC+', lectura: 'Moody’s subió a Caa2 en septiembre; el riesgo país repuntó de ~400 a ~500 pb con la volatilidad.' },
+    { id: 'credito', dimension: 'Crédito soberano', estado: 'neutral', score: 2, tendencia: 'mejora', ancla: 'EMBI 499 pb · Caa2 / CCC+', lectura: 'Moody’s subió a Caa2 en septiembre; el riesgo país repuntó de ~400 a ~500 pb con la volatilidad.' },
     { id: 'social', dimension: 'Social', estado: 'neg', score: 2, tendencia: 'empeora', ancla: 'Pobreza 44,7% · COB en emergencia', lectura: 'La pobreza saltó 6,6 pp en 2025; magisterio y COB presionan antes del retiro del subsidio a la gasolina.' },
   ],
   proyecciones: [

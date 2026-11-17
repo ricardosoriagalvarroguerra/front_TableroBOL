@@ -54,7 +54,7 @@ copian al backend con `npm run sync:db`. Al arrancar, la API compara el hash de 
 
 | Pieza | Qué hace | Dónde |
 |---|---|---|
-| **Ingesta automática** | El backend trae el TCO del BCB y el WEO del FMI al arrancar y cada 6 h; bitácora en `ingesta_corridas` y estado real de cada fuente en el pie | Back_TableroBOL `src/ingest/` |
+| **Ingesta automática** | El backend trae solo, al arrancar y cada 6 h: TCO (BCB), paralelo (Binance P2P), IPC y comercio (INE), EMBI (BCRD), commodities (Yahoo, LME), noticias (RSS) y el WEO (FMI); bitácora en `ingesta_corridas` y estado real de cada fuente en el pie | Back_TableroBOL `src/ingest/` |
 | **Comparador regional** | Pestaña Región: ranking de 9 países por año y trayectoria 2015–2027 de Bolivia, Uruguay (tablero hermano) y la mediana; 2026–2027 marcados como proyección | `RegionPanel`, `src/data/region.ts` (`scripts/build-region.mjs`) |
 | **Alertas** | Reglas explícitas sobre el último dato (TCO fuera de banda, brecha, IPC mensual, EMBI, recesión, RIN en oro, datos viejos); tira en Panorama y contador en el encabezado | `src/alertas.ts` (idéntico en front y back) |
 | **Frescura** | Punto verde/ámbar/rojo por indicador según su periodicidad (diaria 4 días, mensual 45, trimestral 120, anual 400) | `primitives/Frescura.tsx` |

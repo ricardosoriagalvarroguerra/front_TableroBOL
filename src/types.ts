@@ -125,7 +125,7 @@ export interface Rating {
 
 export interface Mercados {
   bonos: Bono[];
-  embi: { value: number; chg: number; series: number[] };
+  embi: { value: number; chg: number; series: number[]; history?: SeriePunto[]; fecha?: string | null };
   ratings: Rating[];
   /** value = null cuando no hay cotización pública (Bolivia no tiene CDS líquido). */
   cds5y: { value: number | null; chg: number; note: string };
@@ -184,6 +184,8 @@ export interface Commodity {
   source: string;
   asof: string;
   nota?: string;
+  /** Serie diaria en vivo (ingesta); si falta, el modal usa la del bundle. */
+  history?: SeriePunto[];
 }
 
 export interface ExternoData {

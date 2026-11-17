@@ -117,9 +117,13 @@ export const HISTORICO: Record<string, SerieAnual> = {
     nota: 'Desempleo urbano, % promedio anual (INE vía FMI WEO) · 2026* = 2T',
   },
   embi: {
-    serie: s([['2022', 564], ['2023', 2233], ['2024', 2087], ['2025', 673], ['2026*', 494]]),
-    nota: 'pb, fin de año · 2026* = 2-nov',
+    serie: s([
+      ['2015', 250], ['2016', 83], ['2017', 203], ['2018', 378], ['2019', 218], ['2020', 461],
+      ['2021', 412], ['2022', 563], ['2023', 2233], ['2024', 2087], ['2025', 673], ['2026*', 499],
+    ]),
+    nota: 'pb, último día hábil del año (JP Morgan, serie del BCRD) · 2026* = 13/11',
   },
+
 };
 
 /** Calificación soberana vigente a fin de cada año (S&P / Moody's / Fitch).

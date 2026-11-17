@@ -3,7 +3,7 @@
 // y su serie histórica fechada real (src/data/series.ts) por id.
 
 import { HISTORY, PERIODICIDAD, sparkFrom } from './data/series.ts';
-import type { Kpi } from './types';
+import type { Kpi, SeriePunto } from './types';
 
 interface MetricInput {
   id: string;
@@ -17,10 +17,14 @@ interface MetricInput {
   source: string;
   asof: string;
   def: string;
+  /** Serie fechada en vivo (API); por defecto, la del bundle. */
+  history?: SeriePunto[];
+  /** Fecha ISO del último dato (frescura). */
+  fecha?: string;
 }
 
 export function metricKpi(o: MetricInput): Kpi {
-  const h = HISTORY[o.id] ?? [];
+  const h = o.history?.length ? o.history : HISTORY[o.id] ?? [];
   return {
     id: o.id,
     label: o.label,
@@ -36,5 +40,6 @@ export function metricKpi(o: MetricInput): Kpi {
     source: o.source,
     asof: o.asof,
     def: o.def,
+    fecha: o.fecha ?? h[h.length - 1]?.f,
   };
 }
