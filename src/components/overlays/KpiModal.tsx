@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Delta } from '../primitives/Delta';
 import { SeriesChart } from '../primitives/SeriesChart';
 import { Insight } from '../primitives/Insight';
+import { frescuraTexto } from '../primitives/Frescura';
 import { polarityOf, deltaTone, trendTone } from '../../tone';
 import { IndicatorChart } from '../charts/IndicatorChart';
 import type { Kpi, Periodicidad, SeriePunto } from '../../types';
@@ -198,6 +199,7 @@ export function KpiModal({ kpi, onClose, lectura }: KpiModalProps) {
           <div>
             <div className="eyebrow">Último dato</div>
             <div className="mt-0.5 mono">{kpi.asof}</div>
+            {frescuraTexto(kpi.fecha, kpi.periodicidad) && <div className="mt-0.5 text-subtle">{frescuraTexto(kpi.fecha, kpi.periodicidad)}</div>}
           </div>
           <div>
             <div className="eyebrow">Polaridad</div>

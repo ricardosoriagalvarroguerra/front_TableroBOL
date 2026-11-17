@@ -80,6 +80,8 @@ export const ANALISIS: AnalisisData = {
   lecturas: {
     historico:
       'Una década en una línea: las reservas pasaron de USD 13.056 M (2015) a 1.709 M (2023) con el tipo de cambio fijo, y el déficit fiscal nunca bajó de 6,6% del PIB. La deuda pública total pasó de 34% a 83% del PIB y la nota soberana cayó de BB a CCC−. El quiebre de 2026 (TCO flexible y FMI) es la respuesta a ese desgaste.',
+    region:
+      'Bolivia es el único de los 9 países que el FMI ve en recesión en 2026 (−3,0%), tiene la segunda inflación más alta tras Argentina, el mayor déficit fiscal (−11,4% del PIB en 2025) y la deuda pública que más creció desde 2015 (+49 pp). Uruguay, en azul, es el contraste: crece poco pero estable y con la inflación en meta. Fuente: FMI, WEO oct-2026; 2026–2027 son proyecciones.',
     cambiario:
       'El régimen flexible cumplió su objetivo de unificar el mercado: la brecha pasó de ~42% a cerca de 0. Septiembre mostró la fragilidad (12,64 → 9,83 en ocho días); desde octubre el TCO se mueve en 11,6–12,2.',
     bloqueos:

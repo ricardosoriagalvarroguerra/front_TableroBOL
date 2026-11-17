@@ -25,7 +25,10 @@ claro/oscuro, tipografía Inter + JetBrains Mono.
   desde `src/data/` con `node db/generate-seed.mjs`. El backend
   ([Back_TableroBOL](https://github.com/ricardosoriagalvarroguerra/Back_TableroBOL)) la aprovisiona
   sola al arrancar.
-- [ ] **Ingesta en vivo** — conectores automáticos a las fuentes (BCB / INE / YPFB / ABC / EMBI / RSS).
+- [x] **Tablero vivo (v0.9)** — ingesta automática (TCO del BCB, FMI WEO), pestaña **Región**
+  (comparador con 8 países de Sudamérica), **alertas** por reglas explícitas, **frescura** de cada
+  dato y **nota ejecutiva** imprimible ([`docs/ANALISIS.md`](docs/ANALISIS.md) § 0.5).
+- [ ] **Más conectores** — INE (IPC, comercio), YPFB, ABC, EMBI y RSS de noticias.
 
 ## Arquitectura (full-stack)
 
@@ -62,7 +65,8 @@ origen («BDR en vivo» / «datos embebidos») y la fecha de corte.
 
 ## Atajos de teclado
 
-- `1`–`7` — cambiar de pestaña
+- `1`–`8` — cambiar de pestaña
+- `N` — nota ejecutiva
 - `/` — enfocar búsqueda
 - `D` — alternar modo claro/oscuro
 - `R` — refrescar

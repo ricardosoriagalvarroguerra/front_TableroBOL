@@ -22,6 +22,9 @@ import { NewsModal } from './components/overlays/NewsModal';
 import { useDashboardData } from './useDashboardData';
 import { HistoricoPanel } from './components/modules/HistoricoPanel';
 import { RatingsPanel } from './components/modules/RatingsPanel';
+import { RegionPanel } from './components/modules/RegionPanel';
+import { AlertasPanel } from './components/modules/AlertasPanel';
+import { NotaEjecutiva } from './components/overlays/NotaEjecutiva';
 import { TesisPanel } from './components/analisis/TesisPanel';
 import { SemaforoPanel } from './components/analisis/SemaforoPanel';
 import { DerivadosPanel } from './components/analisis/DerivadosPanel';
@@ -34,11 +37,11 @@ import { SNAPSHOT, CAMBIARIO } from './data/mockData';
 import { api } from './api';
 import type { Kpi, Noticia, Theme } from './types';
 
-type TabId = 'panorama' | 'analisis' | 'historico' | 'cambiario' | 'bloqueos' | 'externo' | 'mercados';
-const TAB_ORDER: TabId[] = ['panorama', 'analisis', 'historico', 'cambiario', 'bloqueos', 'externo', 'mercados'];
+type TabId = 'panorama' | 'analisis' | 'historico' | 'region' | 'cambiario' | 'bloqueos' | 'externo' | 'mercados';
+const TAB_ORDER: TabId[] = ['panorama', 'analisis', 'historico', 'region', 'cambiario', 'bloqueos', 'externo', 'mercados'];
 
 export default function App() {
-  const { indicadores, bloqueos, resumen, mercados, externo, noticias, eventos, fuentes, analisis, source, reload } =
+  const { indicadores, bloqueos, resumen, mercados, externo, noticias, eventos, fuentes, analisis, region, alertas, source, reload } =
     useDashboardData();
 
   const [theme, setTheme] = useState<Theme>('dark');
@@ -49,6 +52,7 @@ export default function App() {
   const [openNews, setOpenNews] = useState<Noticia | null>(null);
   const [selectedBloqueoId, setSelectedBloqueoId] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [nota, setNota] = useState(false);
   const [leidas, setLeidas] = useState<Set<string>>(() => {
     try {
       return new Set(JSON.parse(localStorage.getItem('bol_leidas') ?? '[]'));
@@ -96,9 +100,11 @@ export default function App() {
         setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
       } else if (e.key.toLowerCase() === 'r') {
         triggerRefresh();
-      } else if (/^[1-7]$/.test(e.key) && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      } else if (/^[1-8]$/.test(e.key) && !e.metaKey && !e.ctrlKey && !e.altKey) {
         setTab(TAB_ORDER[Number(e.key) - 1]);
         window.scrollTo({ top: 0 });
+      } else if (e.key.toLowerCase() === 'n') {
+        setNota((v) => !v);
       } else if (e.key === 'Escape') {
         setOpenKpi(null);
         setOpenNews(null);
@@ -163,6 +169,7 @@ export default function App() {
     { id: 'panorama', label: 'Panorama' },
     { id: 'analisis', label: 'Análisis' },
     { id: 'historico', label: 'Histórico' },
+    { id: 'region', label: 'Región' },
     { id: 'cambiario', label: 'Cambiario' },
     { id: 'bloqueos', label: 'Conflictividad' },
     { id: 'externo', label: 'Externo y deuda' },
@@ -183,6 +190,8 @@ export default function App() {
           now={now}
           snapshot={SNAPSHOT.fecha}
           source={source}
+          alertas={alertas.filter((a) => a.nivel === 'alta').length}
+          onNota={() => setNota(true)}
         />
 
         {/* KPI strip — siempre visible */}
@@ -232,6 +241,9 @@ export default function App() {
               <div className="col-span-12">
                 <SemaforoPanel items={analisis.semaforo} />
               </div>
+              <div className="col-span-12">
+                <AlertasPanel alertas={alertas} onOpen={(id) => byId[id] && setOpenKpi(byId[id])} />
+              </div>
               <div className="col-span-12 lg:col-span-5">
                 <BloqueosResumen
                   bloqueos={bloqueos}
@@ -273,6 +285,16 @@ export default function App() {
                   'Series anuales desde 2015: cada cierre de año más el último dato disponible (marcado con *). La línea punteada es el promedio 2015–2025.'}
               </Insight>
               <HistoricoPanel kpis={indicadores} onOpen={setOpenKpi} />
+            </section>
+          )}
+
+          {tab === 'region' && (
+            <section className="flex flex-col gap-4">
+              <Insight>
+                {lectura('region') ??
+                  'Comparación con 8 países de Sudamérica según el FMI (World Economic Outlook). Los años 2026–2027 son proyecciones.'}
+              </Insight>
+              <RegionPanel data={region} />
             </section>
           )}
 
@@ -335,6 +357,17 @@ export default function App() {
           leida={openNews ? leidas.has(openNews.id) : false}
         />
         <BloqueoDrawer bloqueo={bloqueoSel} onClose={() => setSelectedBloqueoId(null)} />
+        <NotaEjecutiva
+          open={nota}
+          onClose={() => setNota(false)}
+          snapshot={SNAPSHOT.fecha}
+          analisis={analisis}
+          kpis={indicadores}
+          alertas={alertas}
+          eventos={eventos}
+          base={snapshotDate}
+          origen={source === 'api' ? 'BDR en vivo' : 'datos embebidos'}
+        />
       </div>
     </ThemeContext.Provider>
   );

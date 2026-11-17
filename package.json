@@ -1,7 +1,7 @@
 {
   "name": "tablero-inteligente-bol",
   "private": true,
-  "version": "0.8.0",
+  "version": "0.9.0",
   "type": "module",
   "description": "Tablero Inteligente BOL — command center de inteligencia estratégica sobre Bolivia (frontend).",
   "scripts": {

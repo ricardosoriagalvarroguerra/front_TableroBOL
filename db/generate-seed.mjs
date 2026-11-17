@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { KPIS, BLOQUEOS, BLOQUEOS_INFO, MERCADOS, NOTICIAS, EVENTOS, FUENTES, EXTERNO, ANALISIS, SNAPSHOT } from '../src/data/mockData.ts';
 import { HISTORY, PERIODICIDAD } from '../src/data/series.ts';
+import { REGION } from '../src/data/region.ts';
 import { ELECCIONES } from '../src/data/elecciones.ts';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -208,7 +209,7 @@ for (const k of KPIS) {
   // sin serie fechada (o si el dato vigente difiere del último punto): se agrega
   // el valor vigente al corte, para que la vista siempre tenga el dato actual.
   const ult = serie[serie.length - 1];
-  if (!ult || Math.abs(ult.v - k.value) > 1e-9) serie.push({ f: ymd(BASE_DATE), v: k.value });
+  if (!ult || Math.abs(ult.v - k.value) > 1e-9) serie.push({ f: k.fecha ?? ymd(BASE_DATE), v: k.value });
   for (let i = 0; i < serie.length; i++) {
     const last = i === serie.length - 1;
     const variacion = last ? num(k.delta) : 'NULL';
@@ -237,7 +238,8 @@ if (histRows.length) {
 section('fuente_estado (health-check vigente)');
 w('INSERT INTO fuente_estado (fuente_id, estado, latencia_ms, ultima_actualizacion, verificado_en) VALUES');
 w(FUENTES.map((f) =>
-  `  (${sub('fuentes', 'codigo', f.id)}, ${q(f.status)}, ${num(f.latency)}, ${q(f.last)}, ${q(NOW.toISOString())})`,
+  // verificado al inicio del día de corte: cualquier corrida real de la ingesta lo reemplaza
+  `  (${sub('fuentes', 'codigo', f.id)}, ${q(f.status)}, ${num(f.latency)}, ${q(f.last)}, ${q(BASE_DATE.toISOString())})`,
 ).join(',\n') + ';');
 
 // ── bloqueos (Módulo B) ────────────────────────────────────────────────
@@ -477,6 +479,19 @@ for (let i = 0; i < locVals.length; i += 500) {
 }
 
 w();
+// ── region_observaciones (comparador regional, FMI WEO) ────────────────
+section('region_observaciones (FMI WEO)');
+const regRows = [];
+for (const [ind, porPais] of Object.entries(REGION.datos)) {
+  for (const [iso, serie] of Object.entries(porPais)) {
+    for (const p of serie) regRows.push(`  (${q(iso)}, ${q(ind)}, ${p.anio}, ${num(p.valor)}, ${p.proyeccion}, ${q(REGION.vintage)})`);
+  }
+}
+if (regRows.length) {
+  w('INSERT INTO region_observaciones (pais, indicador, anio, valor, proyeccion, vintage) VALUES');
+  w(regRows.join(',\n') + ';');
+}
+
 // ── analisis (Módulo Z) ─────────────────────────────────────────────────
 section('analisis (capa analítica vigente)');
 w('INSERT INTO analisis (clave, asof, contenido) VALUES');

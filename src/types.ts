@@ -45,6 +45,8 @@ export interface Kpi {
   historico?: { periodo: string; valor: number }[];
   /** Definición de la serie anual cuando difiere del dato vigente (p. ej. «dic/dic»). */
   historicoNota?: string;
+  /** Fecha ISO (YYYY-MM-DD) del último dato: alimenta el indicador de frescura. */
+  fecha?: string;
   source: string;
   asof: string;
   def: string;
@@ -345,3 +347,20 @@ export interface AnalisisData {
   /** Lectura breve por indicador (id de KPI → texto), mostrada en el modal. */
   kpiLecturas: Record<string, string>;
 }
+
+// ─── MÓDULO R — Comparador regional (FMI WEO) ─────────────────────────
+export interface RegionPunto {
+  anio: number;
+  valor: number;
+  proyeccion: boolean;
+}
+export interface RegionData {
+  vintage: string | null;
+  paises: { iso: string; nombre: string }[];
+  indicadores: { id: string; label: string; unidad: string; polaridad: 'up' | 'down' }[];
+  /** datos[indicador][iso] = serie anual */
+  datos: Record<string, Record<string, RegionPunto[]>>;
+}
+
+// ─── Alertas (reglas explícitas, src/alertas.ts) ──────────────────────
+export type { Alerta, Nivel } from './alertas';

@@ -50,6 +50,18 @@ cobertura en divisas ≥3 meses holgada / ≥1 estrecha · servicio de deuda / R
 copian al backend con `npm run sync:db`. Al arrancar, la API compara el hash de ambos con
 `seed_meta.version` y, si cambió, los aplica en una transacción (ver `Back_TableroBOL/src/bootstrap.ts`).
 
+### 0.5 Versión 0.9 — «tablero vivo» (coordinada con el Tablero URU)
+
+| Pieza | Qué hace | Dónde |
+|---|---|---|
+| **Ingesta automática** | El backend trae el TCO del BCB y el WEO del FMI al arrancar y cada 6 h; bitácora en `ingesta_corridas` y estado real de cada fuente en el pie | Back_TableroBOL `src/ingest/` |
+| **Comparador regional** | Pestaña Región: ranking de 9 países por año y trayectoria 2015–2027 de Bolivia, Uruguay (tablero hermano) y la mediana; 2026–2027 marcados como proyección | `RegionPanel`, `src/data/region.ts` (`scripts/build-region.mjs`) |
+| **Alertas** | Reglas explícitas sobre el último dato (TCO fuera de banda, brecha, IPC mensual, EMBI, recesión, RIN en oro, datos viejos); tira en Panorama y contador en el encabezado | `src/alertas.ts` (idéntico en front y back) |
+| **Frescura** | Punto verde/ámbar/rojo por indicador según su periodicidad (diaria 4 días, mensual 45, trimestral 120, anual 400) | `primitives/Frescura.tsx` |
+| **Nota ejecutiva** | Botón «Nota» (atajo `N`): tesis, indicadores, semáforo, alertas y agenda en 2 páginas A4, lista para imprimir o guardar en PDF | `overlays/NotaEjecutiva.tsx` |
+
+Los componentes de Región, Alertas, Frescura y Nota son agnósticos del país: leen `src/pais.ts`.
+
 ---
 
 # Revisión analítica (14-jun-2026) — indicadores faltantes y arquitectura de la vista
