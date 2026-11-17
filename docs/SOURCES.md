@@ -69,27 +69,36 @@ corriente 2T, remesas posteriores a agosto, deuda pública total consolidada (po
 
 Serie anual por indicador en `src/data/historico.ts` → tabla `indicador_historico`. Valor de fin
 de año (o anual) más el dato vigente como «2026*». **Los años sin dato verificado se omiten.**
+Desde el 17-nov-2026 la red de la sesión permite descargar las fuentes primarias, así que PIB,
+IPC y comercio exterior salen directamente de los cuadros del INE.
 
-| Serie | Años con dato | Definición | Fuente | Confianza |
+| Serie | Años | Definición | Fuente | Confianza |
 |---|---|---|---|---|
 | Dólar oficial | 2015–2025 + 2026* | venta, fin de año (fijo 6,96 hasta jun-2026) | BCB | Alta |
-| Inflación | 2018–2020, 2023–2025 + 2026* | dic/dic (2026* = oct i/a) | INE vía prensa y MDPyEP | Alta 2023–25, media resto |
-| PIB real | 2015–2016, 2021–2025 + 2026* (1S) | var. anual real | INE, MEFP | Alta 2024–25, media resto |
+| Inflación | 2015–2025 + 2026* | dic/dic (2026* = oct i/a) | INE; coincide con el IPC de fin de período del FMI (WEO oct-2026, `PCPIEPCH`) | Alta |
+| PIB real | 2015–2025 + 2026* (1S) | var. anual a precios de 1990, calculada del cuadro 6.01.01 (2017–2024 preliminares); 2025 nota INE | [INE · serie histórica del PIB](https://www.ine.gob.bo/index.php/estadisticas-economicas/pib-y-cuentas-nacionales/producto-interno-bruto-anual/serie-historica-del-producto-interno-bruto/) | Alta |
+| Exportaciones | 2015–2025 + 2026* (ene–sep) | USD M FOB (2024–2025 preliminares) | [INE · cuadros de exportaciones](https://www.ine.gob.bo/index.php/estadisticas-economicas/comercio-exterior/cuadros-estadisticos-exportaciones/) | Alta |
+| Balanza comercial | 2015–2025 + 2026* | export. FOB − import. CIF, USD M | INE (exportaciones e [importaciones](https://www.ine.gob.bo/index.php/estadisticas-economicas/comercio-exterior/importaciones-cuadros-estadisticos/)) | Alta |
 | RIN | 2015–2025 + 2026* | USD M, fin de año | BCB vía Los Tiempos, EFE | Alta |
-| Resultado fiscal SPNF | 2015–2025 | % PIB. **2016 corregido a −6,6%** (BCB y FMI Art. IV); 2020–2022 de la investigación previa, no re-verificados | MEFP, BCB, Jubileo | Alta 2023–25, media resto |
+| Resultado fiscal SPNF | 2015–2025 | % PIB. **2016 corregido a −6,6%** (BCB y FMI Art. IV); 2020–2022 de la investigación previa | MEFP, BCB | Alta 2023–25, media resto |
+| Deuda pública total | 2015–2025 | deuda bruta del gobierno general, % PIB (2025 estimado) | FMI, WEO oct-2026 (`GGXWDG_NGDP`) | Alta (cobertura FMI, no SPNF) |
 | Deuda externa pública | 2016–2017, 2020–2025 + 2026* | % PIB (la razón depende del PIB que use el BCB) | BCB DEPEX | Media-alta |
+| Desempleo urbano | 2015–2025 + 2026* (2T) | % promedio anual | INE (ECE) vía FMI WEO (`LUR`); 2T-2026 INE vía prensa | Alta / Media (2026) |
 | Gas natural | 2015–2025 | MMm³/d; mezcla producción bruta y fiscalizada según el año | YPFB, UDAPE | Media/baja |
 | Salario mínimo | 2015–2025 + 2026* | Bs/mes (2018–2021 fuente secundaria) | decretos supremos | Alta/Media |
-| Exportaciones | 2016, 2018–2019, 2022–2025 + 2026* (ene–sep) | USD M FOB | IBCE con datos INE | Media |
-| Balanza comercial | 2016, 2018–2019, 2021–2025 + 2026* | USD M (versiones preliminares y revisadas difieren) | IBCE, MDPyEP | Media/baja |
 | Cuenta corriente | 2015–2019, 2021–2025 | % PIB (serie revisada del BCB) | BCB | Alta 2021–24, media resto |
 | Pobreza moderada | 2016–2025 | % (metodología INE 2020, base 2016; **no empalmar** con la serie anterior) | INE vía Jubileo, El País | Media |
 | EMBI | 2022–2025 + 2026* | pb, fin de año | JP Morgan vía Bloomberg Línea, eju.tv | Media |
-| Calificaciones | 2025 y 2026* | rating vigente a fin de año | agencias vía prensa | Alta; **2015–2024 pendiente de verificación** |
+| Calificaciones | 2015–2025 + 2026* | rating vigente a fin de año | S&P: [Trading Economics](https://tradingeconomics.com/bolivia/rating); Moody's y Fitch: [countryeconomy.com](https://countryeconomy.com/ratings/bolivia), contrastado con las acciones de 2023–2026 de prensa | Alta (S&P) / Media (Moody's, Fitch) |
 
-**Pendientes** (requieren habilitar bcb.gob.bo, ine.gob.bo, imf.org o api.worldbank.org en la red
-de la sesión): historial de calificaciones 2015–2024, deuda pública total, desempleo urbano anual,
-comercio 2015/2017/2020, EMBI 2015–2021, IPC 2015–2017/2021–2022 y PIB 2017–2020.
+**Correcciones respecto de la versión anterior:** exportaciones 2016/2022/2024 y saldo comercial
+2015–2025 reemplazados por los cuadros del INE (la versión previa venía de IBCE preliminar y
+tenía 2024 confundido con 2015); PIB 2017–2020 e IPC 2015–2017/2021–2022 completados.
+
+**Pendientes:** EMBI 2015–2021 (dato propietario de JP Morgan), Fitch 2024 (countryeconomy no
+registra acciones después de mar-2023), cuenta corriente 2020, deuda externa 2015/2018/2019 y
+2022, resultado fiscal 2020–2022 contra la fuente MEFP. El Banco Mundial (api.worldbank.org) no
+respondió desde la sesión.
 
 ---
 

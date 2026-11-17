@@ -20,7 +20,7 @@ export { HISTORICO, ANALISIS };
 export const SNAPSHOT = { iso: '2026-11-17', fecha: '17-nov-2026' } as const;
 
 // ─────────────────────────────────────────────────────────────────────
-// MÓDULO A — Indicadores macro (17 KPIs; series fechadas + serie anual 2015→hoy)
+// MÓDULO A — Indicadores macro (19 KPIs; series fechadas + serie anual 2015→hoy)
 // ─────────────────────────────────────────────────────────────────────
 const c1 = (v: number) => v.toFixed(1).replace('.', ',');
 const c2 = (v: number) => v.toFixed(2).replace('.', ',');
@@ -260,6 +260,34 @@ const RAW_KPIS: Kpi[] = [
     source: 'BCB · balanza de pagos',
     asof: '2025',
     def: 'Saldo de la cuenta corriente de 2025: déficit de USD 1.218 M (~2,1% del PIB). En el 1S-2026 giró a superávit de USD 1.376 M por el auge exportador y la caída de importaciones.',
+  },
+  {
+    id: 'deuda_publica',
+    label: 'Deuda pública total',
+    value: 83.3,
+    unit: '% PIB',
+    fmt: c1,
+    delta: 0.1,
+    deltaLabel: '+0,1 pp',
+    sentiment: 'neg',
+    spark: [],
+    source: 'FMI · WEO oct-2026',
+    asof: '2025 (est.)',
+    def: 'Deuda bruta del gobierno general en % del PIB (FMI, WEO oct-2026): pasó de 34% en 2015 a ~83% en 2025, impulsada por la deuda interna con el BCB. El FMI proyecta ~100% para 2026 por la depreciación y la recesión.',
+  },
+  {
+    id: 'desempleo',
+    label: 'Desempleo urbano',
+    value: 3.4,
+    unit: '%',
+    fmt: c1,
+    delta: 0.3,
+    deltaLabel: '+0,3 pp',
+    sentiment: 'neg',
+    spark: [],
+    source: 'INE · ECE',
+    asof: '2T 2026',
+    def: 'Tasa de desempleo urbano (Encuesta Continua de Empleo del INE): 3,4% en el 2T-2026. La informalidad es alta, así que el desempleo abierto subestima el deterioro laboral.',
   },
   {
     id: 'pobreza',

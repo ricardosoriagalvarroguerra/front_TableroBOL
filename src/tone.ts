@@ -33,6 +33,12 @@ const POLARITY: Record<string, Polarity> = {
   balanza_saldo: 'up', // superávit = bueno
   BOL28: 'up', // mayor precio del bono = bueno
   BOL31: 'up',
+  ipc_mensual: 'down', // menos inflación mensual = bueno
+  exportaciones: 'up',
+  cuenta_corriente: 'up', // superávit = bueno
+  deuda_publica: 'down',
+  desempleo: 'down',
+  pobreza: 'down',
   oro: 'up', plata: 'up', zinc: 'up', estano: 'up', soya: 'up', // exportaciones: más precio = bueno
   gas_hh: 'none', // referencia EE.UU., no exportación directa
 };

@@ -68,10 +68,12 @@ const FUENTE_META = {
   rate: ['mercado', null],
   mefp: ['oficial', 'https://www.economiayfinanzas.gob.bo/'],
   commodities: ['mercado', 'https://tradingeconomics.com/'],
+  fmi: ['oficial', 'https://www.imf.org/'],
 };
 const fuenteNombre = Object.fromEntries(FUENTES.map((f) => [f.id, f.name]));
 fuenteNombre.mefp = 'MEFP · ejecución fiscal';
 fuenteNombre.news = 'Agregador noticias';
+fuenteNombre.fmi = 'FMI · WEO';
 const fuenteRows = Object.keys(FUENTE_META).map((code) => {
   const [cat, url] = FUENTE_META[code];
   return `  (${q(code)}, ${q(fuenteNombre[code] || code)}, ${q(cat)}, ${q(url)})`;
@@ -171,6 +173,8 @@ const IND_META = {
   balanza_saldo: { cat: 'externo', per: 'mensual', fuente: 'ine', dec: 0 },
   cuenta_corriente: { cat: 'externo', per: 'anual', fuente: 'bcb', dec: 1 },
   pobreza: { cat: 'social', per: 'anual', fuente: 'ine', dec: 1 },
+  deuda_publica: { cat: 'fiscal', per: 'anual', fuente: 'fmi', dec: 1 },
+  desempleo: { cat: 'social', per: 'trimestral', fuente: 'ine', dec: 1 },
 };
 for (const k of KPIS) if (!IND_META[k.id]) throw new Error(`IND_META sin entrada para el KPI ${k.id}`);
 w('INSERT INTO indicadores (codigo, nombre, unidad, categoria, sentido, decimales, definicion, asof, periodicidad, fuente_id, historico_nota, extra_label, extra_valor, extra_tono) VALUES');
