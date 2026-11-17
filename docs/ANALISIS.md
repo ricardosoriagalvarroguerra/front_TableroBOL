@@ -1,4 +1,58 @@
-# Revisión analítica — indicadores faltantes y arquitectura de la vista
+# Diseño, análisis y decisiones · Tablero BOL
+
+Estado al **17-nov-2026**. La sección 0 documenta la versión 0.8 (datos al día, rediseño
+minimalista, capa analítica y series 2015→hoy); el resto conserva la revisión del 14-jun-2026.
+
+## 0. Versión 0.8 — «llevar el tablero a otro nivel»
+
+### 0.1 Capa analítica (Módulo Z, pestaña **Análisis**)
+
+El tablero pasó de *mostrar datos* a *interpretarlos*, separando siempre el dato de fuente
+del juicio:
+
+| Pieza | Qué es | Dónde |
+|---|---|---|
+| **Tesis** | Titular + 3 ideas en Panorama (6 en total) | `ANALISIS.tesis` |
+| **Semáforo macro** | 8 dimensiones (precios, cambiario, reservas, actividad, fiscal, externo, crédito, social) con score 1–5, tendencia y dato ancla (en tooltip) | `ANALISIS.semaforo` |
+| **Indicadores derivados** | Brecha paralelo/TCO, depreciación vs Bs 6,96, salario mínimo real, cobertura en divisas líquidas, servicio de deuda / RIN, déficit vs meta PGE — **calculados en vivo** con fórmula visible | `src/analytics.ts` |
+| **Proyecciones** | FMI (WEO oct-26), Banco Mundial, BCB, encuesta BCB, PGE 2027 y CEPAL, con rango | `ANALISIS.proyecciones` |
+| **Escenarios 2027** | Ajuste con ancla (55%) / rebote con inversión (20%) / ruptura social (25%), con gatillos observables | `ANALISIS.escenarios` |
+| **Riesgos y oportunidades** | Ordenados por impacto; detalle en tooltip | `ANALISIS.riesgos` |
+| **Lecturas** | Una línea al tope de cada pestaña y una por KPI (en el modal) | `ANALISIS.lecturas`, `kpiLecturas` |
+
+En la BDR vive como documento `jsonb` en la tabla `analisis` (clave `vigente`) y se sirve en
+`GET /api/analisis`; si el backend no expone el endpoint, el front usa la capa embebida.
+
+Umbrales de los derivados (en `analytics.ts`): brecha |≤2%| unificada · |≤10%| moderada ·
+cobertura en divisas ≥3 meses holgada / ≥1 estrecha · servicio de deuda / RIN ≤25% holgado /
+≤50% exigente · meta fiscal del PGE 2026 −9,2% del PIB.
+
+### 0.2 Rediseño minimalista (menos ruido, menos texto)
+
+- Tokens neutros fríos con acento ámbar; tarjetas `card` (radio 12px), sin sombras ni degradés.
+- Etiquetas en formato oración: sin mayúsculas monoespaciadas, sin códigos de módulo ni filas de atajos.
+- Sparklines neutros (color sólo en el último punto y en el delta); números con coma decimal (es-BO).
+- Tira de KPIs: 3 destacados (TCO, IPC, RIN) + 3 grupos de 4; VRD y brecha P/VRD se retiran
+  (el VRD fue absorbido por el TCO y la RD 142 eliminó el tope de venta).
+- Feed sólo con titulares (resumen en tooltip); semáforo en una fila; detalles en tooltip.
+- Pestañas: Panorama · Análisis · Histórico · Cambiario · Conflictividad · Externo y deuda · Mercados (atajos 1–7).
+
+### 0.3 Series históricas 2015→hoy
+
+- Pestaña **Histórico**: una tarjeta por indicador con la serie anual, promedio 2015–2025, mínimo,
+  máximo y «último vs promedio». El modal de cada KPI suma la vista «2015–hoy».
+- Mercados: línea de tiempo del EMBI y calificación a fin de año (sólo años corroborados).
+- Procedencia y años omitidos: `docs/SOURCES.md` § Series históricas.
+
+### 0.4 BDR auto-aprovisionada
+
+`db/schema.sql` + `db/seed.sql` (generado con `node db/generate-seed.mjs` desde `src/data/`) se
+copian al backend con `npm run sync:db`. Al arrancar, la API compara el hash de ambos con
+`seed_meta.version` y, si cambió, los aplica en una transacción (ver `Back_TableroBOL/src/bootstrap.ts`).
+
+---
+
+# Revisión analítica (14-jun-2026) — indicadores faltantes y arquitectura de la vista
 
 Estado al 14-jun-2026. Análisis de (1) qué indicadores convendría sumar y
 (2) si el panel de bloqueos debería ser una pestaña aparte para liberar espacio.

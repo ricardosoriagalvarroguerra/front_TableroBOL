@@ -25,10 +25,10 @@ export function BloqueoDrawer({ bloqueo, onClose }: BloqueoDrawerProps) {
         style={{ borderLeft: '1px solid var(--border-strong)' }}
       >
         <div className="px-4 h-10 border-b border-token flex items-center justify-between">
-          <div className="mono text-[10px] uppercase tracking-[0.18em] text-subtle">Bloqueo · ficha</div>
+          <div className="text-[11px]  text-subtle">Bloqueo · ficha</div>
           <button
             onClick={onClose}
-            className="mono text-[10px] text-muted hover:text-accent uppercase tracking-wider"
+            className="mono text-[10px] text-muted hover:text-accent"
           >
             cerrar [esc]
           </button>
@@ -37,7 +37,7 @@ export function BloqueoDrawer({ bloqueo, onClose }: BloqueoDrawerProps) {
           <div className="flex items-center gap-2">
             <Tag tone={severidadTone[bloqueo.severidad]}>{bloqueo.severidad}</Tag>
             <Tag>D{bloqueo.dia}</Tag>
-            <span className="mono text-[10px] text-subtle uppercase tracking-wider ml-auto">
+            <span className="text-[11px] text-subtle  ml-auto">
               {bloqueo.dept}
             </span>
           </div>
@@ -46,21 +46,21 @@ export function BloqueoDrawer({ bloqueo, onClose }: BloqueoDrawerProps) {
 
           <dl className="mt-5 space-y-3 text-[12px]">
             <div className="grid grid-cols-3 gap-2">
-              <dt className="mono text-[9px] uppercase tracking-wider text-subtle col-span-1">Sector</dt>
+              <dt className="eyebrow col-span-1">Sector</dt>
               <dd className="col-span-2">{bloqueo.sector}</dd>
             </div>
             <div className="grid grid-cols-3 gap-2">
-              <dt className="mono text-[9px] uppercase tracking-wider text-subtle col-span-1">Motivo</dt>
+              <dt className="eyebrow col-span-1">Motivo</dt>
               <dd className="col-span-2">{bloqueo.motivo}</dd>
             </div>
             <div className="grid grid-cols-3 gap-2">
-              <dt className="mono text-[9px] uppercase tracking-wider text-subtle col-span-1">Inicio</dt>
+              <dt className="eyebrow col-span-1">Inicio</dt>
               <dd className="col-span-2 mono">
                 hace {bloqueo.dia} día{bloqueo.dia > 1 ? 's' : ''}
               </dd>
             </div>
             <div className="grid grid-cols-3 gap-2">
-              <dt className="mono text-[9px] uppercase tracking-wider text-subtle col-span-1">Fuente</dt>
+              <dt className="eyebrow col-span-1">Fuente</dt>
               <dd className="col-span-2">{bloqueo.fuente}</dd>
             </div>
           </dl>
@@ -68,7 +68,7 @@ export function BloqueoDrawer({ bloqueo, onClose }: BloqueoDrawerProps) {
           {/* contexto electoral del territorio (cruce) */}
           {e && (
             <div className="mt-5 surface-sunk rounded-[4px] p-3">
-              <div className="mono text-[9px] uppercase tracking-wider text-subtle">
+              <div className="eyebrow">
                 Contexto electoral · {e.nombre}
               </div>
               <div className="mt-2 space-y-1.5 text-[11px]">
@@ -99,7 +99,7 @@ export function BloqueoDrawer({ bloqueo, onClose }: BloqueoDrawerProps) {
           )}
 
           <div className="mt-4 surface-sunk rounded-[4px] p-3">
-            <div className="mono text-[9px] uppercase tracking-wider text-subtle">Cronología</div>
+            <div className="eyebrow">Cronología</div>
             <ol className="mt-2 space-y-1.5 text-[11px]">
               <li className="flex gap-2">
                 <span className="mono text-subtle w-10">D−{bloqueo.dia}</span>

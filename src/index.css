@@ -5,40 +5,60 @@
 /* ─────────────────────────────────────────────────────────────────────
    Design tokens — monochrome institutional palette, light/dark via .dark
    ───────────────────────────────────────────────────────────────────── */
+/* Paleta institucional sobria (neutros fríos) + acento ámbar «sol de mayo» y
+   celeste uruguayo como color informativo. Tonos *-soft = rellenos de fondo. */
 :root {
-  --bg: #fafafa;
+  --bg: #f5f6f8;
   --bg-elev: #ffffff;
-  --bg-sunk: #f4f4f5;
-  --border: #e4e4e7;
-  --border-strong: #d4d4d8;
-  --fg: #18181b;
-  --fg-muted: #71717a;
-  --fg-subtle: #a1a1aa;
-  --accent: #f59e0b;
-  --pos: #10b981;
-  --neg: #ef4444;
-  --info: #3b82f6;
+  --bg-sunk: #f0f2f5;
+  --bg-hover: #eceff3;
+  --border: #e2e5ea;
+  --border-strong: #cfd4dc;
+  --fg: #10131a;
+  --fg-muted: #5b6270;
+  --fg-subtle: #8c93a0;
+  --accent: #c97f00;
+  --accent-soft: rgba(201, 127, 0, 0.1);
+  --pos: #10925a;
+  --pos-soft: rgba(16, 146, 90, 0.1);
+  --neg: #d63a3a;
+  --neg-soft: rgba(214, 58, 58, 0.09);
+  --info: #1f78d6;
+  --info-soft: rgba(31, 120, 214, 0.09);
+  --shadow: 0 1px 2px rgba(16, 19, 26, 0.04), 0 4px 16px -8px rgba(16, 19, 26, 0.08);
+  --glow: radial-gradient(1200px 400px at 10% -10%, rgba(31, 120, 214, 0.06), transparent 60%);
 }
 
 .dark {
-  --bg: #0a0a0b;
-  --bg-elev: #111113;
-  --bg-sunk: #161618;
-  --border: #1f1f23;
-  --border-strong: #2a2a30;
-  --fg: #fafafa;
-  --fg-muted: #71717a;
-  --fg-subtle: #52525b;
-  --accent: #f59e0b;
-  --pos: #10b981;
-  --neg: #ef4444;
-  --info: #3b82f6;
+  --bg: #08090c;
+  --bg-elev: #0d0f13;
+  --bg-sunk: #13161c;
+  --bg-hover: #171b22;
+  --border: #181b22;
+  --border-strong: #262b35;
+  --fg: #eceef2;
+  --fg-muted: #8a919d;
+  --fg-subtle: #5b626e;
+  --accent: #f5a524;
+  --accent-soft: rgba(245, 165, 36, 0.1);
+  --pos: #2ec27e;
+  --pos-soft: rgba(46, 194, 126, 0.1);
+  --neg: #f05656;
+  --neg-soft: rgba(240, 86, 86, 0.1);
+  --info: #5aaeff;
+  --info-soft: rgba(90, 174, 255, 0.1);
+  --shadow: 0 1px 0 rgba(255, 255, 255, 0.025) inset, 0 8px 24px -16px rgba(0, 0, 0, 0.8);
+  --glow: radial-gradient(1200px 420px at 8% -12%, rgba(90, 174, 255, 0.07), transparent 60%),
+    radial-gradient(900px 380px at 100% -10%, rgba(245, 165, 36, 0.05), transparent 60%);
 }
 
 html,
 body {
   background: var(--bg);
   color: var(--fg);
+}
+body {
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
@@ -55,6 +75,18 @@ body {
 .surface {
   background: var(--bg-elev);
   border: 1px solid var(--border);
+}
+.card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.card-hover {
+  transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+}
+.card-hover:hover {
+  border-color: var(--border-strong);
+  background: linear-gradient(var(--bg-hover), var(--bg-elev));
 }
 .surface-sunk {
   background: var(--bg-sunk);
@@ -153,8 +185,50 @@ body {
 }
 
 /* ─── fancy hover ──────────────────────────────────────────────────── */
+.row-hover {
+  transition: background 120ms ease;
+}
 .row-hover:hover {
-  background: var(--bg-sunk);
+  background: var(--bg-hover);
+}
+
+/* ─── eyebrow / labels ─────────────────────────────────────────────── */
+.eyebrow {
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--fg-muted);
+}
+.text-info {
+  color: var(--info);
+}
+.bg-pos-soft { background: var(--pos-soft); }
+.bg-neg-soft { background: var(--neg-soft); }
+.bg-info-soft { background: var(--info-soft); }
+.bg-accent-soft { background: var(--accent-soft); }
+
+/* ─── ticker (cinta de cotizaciones) ───────────────────────────────── */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 70s linear infinite;
+}
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+.fade-up {
+  animation: fade-up 260ms ease both;
 }
 
 /* prevent Tailwind reset of focus ring color */

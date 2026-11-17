@@ -3,8 +3,8 @@
 
 import { useEffect, useState } from 'react';
 import { api, toKpi } from './api';
-import { KPIS, BLOQUEOS, MERCADOS, EXTERNO, NOTICIAS, EVENTOS, FUENTES } from './data/mockData';
-import type { Kpi, Bloqueo, Mercados, ExternoData, Noticia, Evento, Fuente } from './types';
+import { KPIS, BLOQUEOS, BLOQUEOS_INFO, MERCADOS, EXTERNO, NOTICIAS, EVENTOS, FUENTES, ANALISIS } from './data/mockData';
+import type { Kpi, Bloqueo, Mercados, ExternoData, Noticia, Evento, Fuente, AnalisisData } from './types';
 
 export interface DashboardData {
   indicadores: Kpi[];
@@ -15,21 +15,26 @@ export interface DashboardData {
   noticias: Noticia[];
   eventos: Evento[];
   fuentes: Fuente[];
+  analisis: AnalisisData;
 }
 
 function fromMock(): DashboardData {
   return {
     indicadores: KPIS,
-    bloqueos: BLOQUEOS,
+    // si el último corte ABC no tiene puntos activos, la lista georreferenciada (ola de
+    // mayo–junio) no se muestra como vigente; queda en la serie histórica del panel.
+    bloqueos: BLOQUEOS_INFO.total ? BLOQUEOS : [],
+    // el conteo vigente sale del corte ABC (BLOQUEOS_INFO); la lista es la última ola georreferenciada
     resumen: {
-      activos: BLOQUEOS.length,
-      departamentos: new Set(BLOQUEOS.map((b) => b.dept)).size,
+      activos: BLOQUEOS_INFO.total,
+      departamentos: BLOQUEOS_INFO.total ? new Set(BLOQUEOS.map((b) => b.dept)).size : 0,
     },
     mercados: MERCADOS,
     externo: EXTERNO,
     noticias: NOTICIAS,
     eventos: EVENTOS,
     fuentes: FUENTES,
+    analisis: ANALISIS,
   };
 }
 
@@ -54,6 +59,9 @@ export function useDashboardData(): DashboardData & { source: DataSource; reload
             api.eventos(ctrl.signal),
             api.fuentes(ctrl.signal),
           ]);
+        // El análisis es opcional en el backend: si el endpoint no existe (API
+        // anterior), se conserva la capa analítica embebida.
+        const analisis = await api.analisis(ctrl.signal).catch(() => ANALISIS);
         setData({
           indicadores: indicadores.map(toKpi),
           bloqueos: bloqueos.bloqueos,
@@ -63,6 +71,7 @@ export function useDashboardData(): DashboardData & { source: DataSource; reload
           noticias,
           eventos,
           fuentes,
+          analisis,
         });
         setSource('api');
       } catch (err) {

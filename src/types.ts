@@ -41,6 +41,10 @@ export interface Kpi {
   periodicidad?: Periodicidad;
   /** Full dated, sourced historical series powering the detail modal. */
   history?: SeriePunto[];
+  /** Serie histórica ANUAL (2015 → último año cerrado; el dato vigente va como «2026*»). */
+  historico?: { periodo: string; valor: number }[];
+  /** Definición de la serie anual cuando difiere del dato vigente (p. ej. «dic/dic»). */
+  historicoNota?: string;
   source: string;
   asof: string;
   def: string;
@@ -125,6 +129,16 @@ export interface Mercados {
   cds5y: { value: number | null; chg: number; note: string };
   /** Composición RIN (% oro / divisas / DEG). */
   reservas: { oro: number; divisas: number; deg: number };
+  /** Calificación a fin de cada año (S&P / Moody's / Fitch), 2015 → hoy. */
+  ratingsHistoria?: RatingHistoria[];
+}
+
+/** Calificación soberana vigente al cierre de un año. */
+export interface RatingHistoria {
+  anio: string; // «2015» … «2026*» (vigente)
+  sp: string | null;
+  moodys: string | null;
+  fitch: string | null;
 }
 
 // ─── MÓDULO D — Noticias ──────────────────────────────────────────────
@@ -269,4 +283,65 @@ export interface CambiarioData {
   };
   lectura: CambiarioLectura[]; // lectura cualitativa del economista
   source: string;
+}
+
+// ─── MÓDULO Z — Análisis (capa de inteligencia sobre los datos) ────────
+// Juicio analítico explícito y fechado: tesis, semáforo por dimensión,
+// proyecciones de consenso, escenarios, riesgos/catalizadores y lecturas por
+// pestaña. Se distingue siempre del dato duro (fuente) con la etiqueta «lectura».
+export type Estado = 'pos' | 'neutral' | 'neg';
+export type Tendencia = 'mejora' | 'estable' | 'empeora';
+
+export interface SemaforoItem {
+  id: string;
+  dimension: string;
+  estado: Estado;
+  /** 1 (frágil) – 5 (sólido). */
+  score: number;
+  tendencia: Tendencia;
+  /** Dato que ancla la evaluación (p. ej. «IPC 9,2% i/a»). */
+  ancla: string;
+  lectura: string;
+}
+
+export interface Proyeccion {
+  fuente: string;
+  fecha: string;
+  pib2026: number | null;
+  pib2027: number | null;
+  ipc2026: number | null;
+  ipc2027: number | null;
+  tc2026: number | null; // Bs por USD a fin de 2026
+  fiscal2026: number | null; // resultado global SPNF % PIB
+}
+
+export interface Escenario {
+  id: 'base' | 'optimista' | 'riesgo';
+  nombre: string;
+  probabilidad: number; // %
+  pib2027: number | null;
+  ipc2027: number | null;
+  narrativa: string;
+  gatillos: string[];
+}
+
+export interface RiesgoItem {
+  titulo: string;
+  detalle: string;
+  tipo: 'riesgo' | 'oportunidad';
+  impacto: 'alto' | 'medio' | 'bajo';
+  horizonte: string;
+}
+
+export interface AnalisisData {
+  asof: string;
+  tesis: { titulo: string; bajada: string; puntos: string[] };
+  semaforo: SemaforoItem[];
+  proyecciones: Proyeccion[];
+  escenarios: Escenario[];
+  riesgos: RiesgoItem[];
+  /** Lectura analítica por pestaña (cambiario, bloqueos, externo, mercados, historico). */
+  lecturas: Record<string, string>;
+  /** Lectura breve por indicador (id de KPI → texto), mostrada en el modal. */
+  kpiLecturas: Record<string, string>;
 }

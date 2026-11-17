@@ -1,5 +1,5 @@
 import type { RefObject } from 'react';
-import type { Theme } from '../types';
+import type { Kpi, Theme } from '../types';
 
 export interface ClockParts {
   date: string;
@@ -8,12 +8,13 @@ export interface ClockParts {
 }
 
 export function formatNow(d: Date): ClockParts {
-  const dd = d.toLocaleDateString('es-BO', { day: '2-digit', month: 'short' });
+  const dd = d.toLocaleDateString('es-BO', { day: '2-digit', month: 'short', timeZone: 'America/La_Paz' });
   const hh = d.toLocaleTimeString('es-BO', {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
     hour12: false,
+    timeZone: 'America/La_Paz',
   });
   return { date: dd.replace('.', '').toUpperCase(), time: hh, tz: 'BOT · UTC−4' };
 }
@@ -27,6 +28,21 @@ interface HeaderProps {
   query: string;
   setQuery: (q: string) => void;
   now: Date;
+  /** Fecha de corte de los datos (snapshot). */
+  snapshot: string;
+  /** Indicadores para la cinta (obsoleto, no se muestra). */
+  ticker?: Kpi[];
+  source: 'api' | 'mock' | 'loading';
+}
+
+/** Marca: cordillera estilizada (genérica) en ámbar. */
+function Mark() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden>
+      <path d="M2 19 L9 7 L13 13 L16 9 L22 19 Z" style={{ fill: 'var(--accent)' }} />
+      <path d="M7.6 9.4 L9 7 L10.6 9.5 L9.6 9 L8.6 9.8 Z" style={{ fill: 'var(--bg)' }} opacity="0.55" />
+    </svg>
+  );
 }
 
 export function Header({
@@ -38,86 +54,79 @@ export function Header({
   query,
   setQuery,
   now,
+  snapshot,
+  source,
 }: HeaderProps) {
   const t = formatNow(now);
+  const origen = source === 'api' ? 'BDR en vivo' : source === 'mock' ? 'datos embebidos' : 'conectando…';
   return (
     <header
-      className="sticky top-0 z-30 surface border-l-0 border-r-0 border-t-0"
-      style={{ borderBottomColor: 'var(--border-strong)' }}
+      className="sticky top-0 z-30 backdrop-blur"
+      style={{ background: 'color-mix(in srgb, var(--bg) 85%, transparent)', borderBottom: '1px solid var(--border)' }}
     >
-      <div className="flex items-stretch h-12 px-3 sm:px-4 gap-2 sm:gap-4">
-        {/* brand */}
-        <div className="flex items-center gap-2 sm:gap-2.5 pr-2 sm:pr-4 sm:border-r border-token shrink-0">
-          <div className="relative">
-            <div className="w-2 h-2 rounded-full bg-accent" />
-            <div className="absolute inset-0 w-2 h-2 rounded-full bg-accent pulse-dot" />
+      <div className="flex items-center h-14 px-4 sm:px-6 gap-3 sm:gap-5" title={origen}>
+        {/* marca */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <Mark />
+          <div className="leading-tight">
+            <div className="text-[13.5px] font-semibold tracking-[-0.01em] whitespace-nowrap">
+              Tablero BOL
+            </div>
+            <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-subtle">
+              <span
+                className={`inline-block w-1.5 h-1.5 rounded-full ${source === 'api' ? 'pulse-dot' : ''}`}
+                style={{ background: source === 'api' ? 'var(--pos)' : source === 'mock' ? 'var(--accent)' : 'var(--fg-subtle)' }}
+              />
+              Datos al {snapshot}
+            </div>
           </div>
-          <div className="mono text-[11px] tracking-[0.18em] sm:tracking-[0.22em] uppercase whitespace-nowrap">
-            Tablero BOL
-          </div>
-          <span className="hidden lg:inline mono text-[9px] uppercase tracking-wider text-subtle">
-            v0.7 · 2026.05
-          </span>
         </div>
 
-        {/* search */}
-        <div className="flex-1 flex items-center min-w-0 max-w-[640px]">
-          <div className="surface-sunk rounded-[4px] flex items-center gap-2 px-2.5 h-8 w-full">
-            <span className="mono text-[10px] text-subtle shrink-0">⌕</span>
+        {/* búsqueda */}
+        <div className="flex-1 flex items-center min-w-0 max-w-[560px] mx-auto">
+          <label className="surface-sunk rounded-[8px] flex items-center gap-2 px-3 h-9 w-full focus-within:ring-accent">
+            <svg width="13" height="13" viewBox="0 0 16 16" aria-hidden style={{ color: 'var(--fg-subtle)' }}>
+              <circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" strokeWidth="1.6" />
+              <line x1="11" y1="11" x2="15" y2="15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            </svg>
             <input
               ref={searchRef}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar…"
-              className="flex-1 min-w-0 bg-transparent outline-none mono text-[12px] placeholder:text-subtle"
+              placeholder="Buscar indicador, fuente…"
+              aria-label="Buscar indicadores"
+              className="flex-1 min-w-0 bg-transparent outline-none text-[12.5px] placeholder:text-subtle"
             />
             <span className="kbd hidden sm:inline">/</span>
-          </div>
+          </label>
         </div>
 
-        {/* actions */}
-        <div className="flex items-center gap-1.5 sm:gap-2 ml-auto shrink-0">
+        {/* acciones */}
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <button
             onClick={onRefresh}
             title="Refrescar [R]"
             aria-label="Refrescar"
-            className={`mono text-[10px] uppercase tracking-wider px-2 h-8 surface-sunk rounded-[4px] flex items-center gap-1.5 hover:ring-accent ${
-              refreshing ? 'text-accent' : ''
+            className={`h-9 w-9 surface-sunk rounded-[8px] flex items-center justify-center gap-1.5 text-[11.5px] hover:ring-accent ${
+              refreshing ? 'text-accent' : 'text-muted'
             }`}
           >
-            <span
-              className={refreshing ? 'inline-block' : ''}
-              style={refreshing ? { animation: 'spin 800ms linear' } : {}}
-            >
-              ↻
-            </span>
-            <span className="hidden md:inline">refrescar</span>
-            <span className="kbd hidden md:inline">R</span>
+            <span style={refreshing ? { display: 'inline-block', animation: 'spin 800ms linear' } : {}}>↻</span>
+
           </button>
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            title="Modo [D]"
-            aria-label="Cambiar modo"
-            className="mono text-[10px] uppercase tracking-wider px-2 h-8 surface-sunk rounded-[4px] flex items-center gap-1.5 hover:ring-accent"
+            title="Modo claro/oscuro [D]"
+            aria-label="Cambiar modo claro u oscuro"
+            className="h-9 w-9 surface-sunk rounded-[8px] flex items-center justify-center gap-1.5 text-[11.5px] text-muted hover:ring-accent"
           >
-            <span>{theme === 'dark' ? '○' : '●'}</span>
-            <span className="hidden md:inline">{theme === 'dark' ? 'oscuro' : 'claro'}</span>
-            <span className="kbd hidden md:inline">D</span>
+            <span>{theme === 'dark' ? '☾' : '☀'}</span>
+
           </button>
-          <div className="hidden sm:flex px-3 h-8 surface-sunk rounded-[4px] items-center gap-3">
-            <div className="mono text-[10px] text-muted leading-none flex items-center gap-2">
-              <span className="text-subtle hidden md:inline">{t.date}</span>
-              <span>
-                {t.time}
-                <span className="blink">_</span>
-              </span>
-            </div>
-            <span className="hidden lg:inline mono text-[9px] text-subtle uppercase tracking-wider">
-              {t.tz}
-            </span>
-          </div>
+          <span className="hidden lg:inline mono text-[12px] text-subtle tabular-nums pl-2">{t.time}</span>
         </div>
       </div>
+
     </header>
   );
 }

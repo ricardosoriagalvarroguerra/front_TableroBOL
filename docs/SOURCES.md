@@ -1,4 +1,101 @@
-# Fuentes y procedencia de los datos · snapshot Bolivia ~20 jun 2026
+# Fuentes y procedencia de los datos · snapshot Bolivia al 17-nov-2026
+
+Datos revisados contra fuentes **oficiales** (BCB, INE, MEFP, YPFB, ANH, FMI) y medios
+reputados que las **citan**. La red de la sesión de actualización bloqueó la descarga directa
+de los sitios oficiales (bcb.gob.bo, ine.gob.bo, imf.org, api.worldbank.org), así que las cifras
+salen de fragmentos de búsqueda que citan la fuente oficial. **No se inventan ni interpolan
+cifras:** lo que no se pudo corroborar queda como *s/d* o se omite, y se indica abajo.
+Confianza: **alta** = varias fuentes coinciden o la nota oficial está indexada; **media** = una o
+dos fuentes; **baja** = indirecta o en conflicto.
+
+## Actualización al 17-nov-2026
+
+### Indicadores (tira superior)
+
+| Indicador | Valor | Corte | Fuente | Confianza |
+|---|---|---|---|---|
+| Dólar oficial (TCO) | Bs 11,67 | 14–16 nov | BCB (tabla TCO) vía Red Uno, bolivia.com | Alta |
+| · trayectoria | 9,73 (29-jun) → 12,15 (3-ago) → **12,64 máx. (9-sep)** → **9,83 mín. (17-sep)** → 12,00 (1-oct) → 12,09 (1-nov) → 11,67 | jun–nov | BCB, Correo del Sur, Opinión, Red Uno | Alta/Media |
+| Régimen | RD 142/2026 (24-sep) elimina el tope de venta TCO + Bs 0,10; venta bancaria libre | 24-sep | BCB vía ABI, Visión 360 | Alta |
+| Dólar paralelo | Bs 11,84 / **11,95** (compra/venta) | 16 nov | dolarboliviahoy vía Red Uno | Media-alta |
+| Brecha | +2,4% (venta paralelo ÷ TCO − 1) | 16 nov | derivado | — |
+| IPC interanual | **7,08%** · mensual +2,07% · acum. 6,03% | oct-2026 (5-nov) | INE vía Red Uno, El Mundo, La Patria | Alta |
+| · jul / ago / sep | 4,93% / 5,02% / 5,70% i/a (−2,79 / +1,10 / +0,85% m/m) | | INE (notas de prensa) | Alta |
+| RIN | **USD 3.978 M** (oro 3.266 · divisas 647 · DEG 29 · FMI 35) | 16-oct | BCB vía Unitel, La Razón | Alta (total) / Media (oro) |
+| · puntos | 3.617 (30-jun) · 3.632 (31-jul) · 3.933 (30-sep; líquidas 474) | | BCB vía ABI, EFE, Opinión | Alta |
+| Cobertura de importaciones | 4,4 meses (RIN ÷ import. prom. ene–sep USD 902 M); divisas ≈ 0,7 m | 16-oct | derivado | — |
+| EMBI | **494 pb** (2-nov); 424 jun · 428 jul · 396 ago · 483 sep · 502 oct | | JP Morgan vía Bloomberg Línea; MEFP (13-ago: 407) | Media-alta (sep: una fuente) |
+| PIB real | **−3,27% acumulado 1S-2026**; 2T **−5,94%** i/a; 1T −0,31% | 30-oct | INE | Alta (1T: media) |
+| Exportaciones | **USD 10.350 M** ene–sep (+54,4% a/a) | 31-oct | INE vía La Razón, Unitel | Alta |
+| Balanza comercial | sep +183,4 M (X 1.304,7 · M 1.121,2); jun +184,7 · jul +176,0 · ago +360,3; ene–sep +2.236,5 | | INE | Alta (los acumulados y mensuales difieren levemente por revisiones) |
+| Deuda externa pública | **USD 14.117,2 M · 26,1% del PIB** (jun 14.357,7 · 26,5%) | 30-sep | BCB vía El Deber, Infobae | Alta |
+| Resultado fiscal | −12,2% PIB (2025); meta 2026 −9,2%; ene–may 2026 +0,2% | | MEFP vía Correo del Sur | Alta / Media |
+| PGE 2027 | déficit −6,7%, inflación 10,4%, TC ~Bs 12, sin financiamiento BCB, Bs 11.000 M para subsidios | 30-oct | Visión 360, Red Uno, El Deber | Alta |
+| Producción de gas | 27,34 MMm³/d (dic-2025) **sin dato 2026**; YPFB proyecta 26,6 | | YPFB | Media |
+| Export. de gas | USD 831,8 M ene–sep (−2,2% a/a) | oct | INE vía Red Uno, El Deber | Media-alta |
+| Cuenta corriente | 2025 −USD 1.218 M (~−2,1% PIB); 1S-2026 +USD 1.376 M | | BCB | Media |
+| Remesas | USD 752,6 M ene–ago (−71 M a/a) | 6-oct | BCB vía ABI, Infobae | Alta |
+| Salario mínimo | Bs 3.300 (sin cambio a mitad de año); COB pide Bs 7.000 para 2027 | | DS 5516; prensa | Alta |
+| Pobreza moderada | 44,7% (2025) desde 38,1% (2024); extrema 16,7% | | INE vía El País, El Diario | Media |
+
+**No re-verificado:** gas mensual de 2026, IGAE, ejecución fiscal posterior a mayo, cuenta
+corriente 2T, remesas posteriores a agosto, deuda pública total consolidada (por eso *s/d*).
+
+### Mercados, FMI y multilaterales
+
+| Dato | Valor | Fecha | Fuente | Confianza |
+|---|---|---|---|---|
+| Moody's | **Caa2, positiva** (sube desde Caa3) | ~30-sep-2026 | Visión 360, Unitel, ABI | Alta |
+| S&P | CCC+, estable (sin acción nueva desde mar-2026) | | | Media (ausencia de evidencia) |
+| Fitch | CCC (informe del 24-ago ratifica) | | Visión 360 | Media |
+| Bonos 2028 / 2031 | **sin cotización pública corroborada desde junio**: se muestran 94,88 / 96,6 como último dato verificado | | Investing / Bloomberg Línea (jun) | — |
+| FMI | EFF de 36 meses aprobado el **2-oct** (DEG 1.369 M ≈ USD 1.900 M); desembolso de **USD 211,3 M** recibido el 6-oct; 1ª revisión en diciembre | | FMI PR 26/317; BCB | Alta |
+| BID | USD 750 M (5-nov) · Banco Mundial USD 500 M (12-nov) · CAF USD 224 M (pendiente de la Asamblea) | | ABI, La Razón, El Deber | Alta |
+| Combustibles | Diésel **Bs 17,95** a paridad de importación (DS 5716, 19-sep); especial 6,96 y premium 11,00 siguen subsidiadas; fin del subsidio a la gasolina el 12-ene-2027 anunciado por YPFB y **negado** por Hidrocarburos | | ANH; prensa | Alta / disputado |
+| Commodities | oro 3.865,75 (−6,6% m/m) · plata 47,20 · zinc 3.702,85 · estaño 46.174 (LME 3M) · Henry Hub 3,24 · soya 12,29 | 13–17 nov | Trading Economics, Kitco, SMM, CBOT | Alta/Media (variaciones no publicadas → s/d) |
+
+### Conflictividad, noticias y agenda
+
+- **Bloqueos:** no hay conteo ABC publicado después del 24-jun (0 puntos). No se registró una ola
+  nacional desde entonces; los focos (diésel 1–2 sep y 19–21 sep, magisterio 9–10 nov, Chapare
+  11–12 nov, paro de camioneros chilenos 10–13 nov, ampliado de la COB 18-nov) salen de prensa.
+  La lista georreferenciada del mapa es la ola de mayo–junio y se guarda como `levantado`.
+- **Noticias:** 21 titulares reales del 19-sep al 16-nov, cada uno con enlace a la nota cuando
+  estaba disponible (Al Jazeera, Infobae, Correo del Sur, La Razón, Visión 360, El Deber, Unitel, FMI…).
+- **Agenda:** sólo hitos corroborados; las fechas de publicación del INE y el segundo desembolso
+  del FMI son **estimadas** a partir del patrón de publicación y se marcan «estim.».
+
+## Series históricas 2015→hoy (pestaña Histórico)
+
+Serie anual por indicador en `src/data/historico.ts` → tabla `indicador_historico`. Valor de fin
+de año (o anual) más el dato vigente como «2026*». **Los años sin dato verificado se omiten.**
+
+| Serie | Años con dato | Definición | Fuente | Confianza |
+|---|---|---|---|---|
+| Dólar oficial | 2015–2025 + 2026* | venta, fin de año (fijo 6,96 hasta jun-2026) | BCB | Alta |
+| Inflación | 2018–2020, 2023–2025 + 2026* | dic/dic (2026* = oct i/a) | INE vía prensa y MDPyEP | Alta 2023–25, media resto |
+| PIB real | 2015–2016, 2021–2025 + 2026* (1S) | var. anual real | INE, MEFP | Alta 2024–25, media resto |
+| RIN | 2015–2025 + 2026* | USD M, fin de año | BCB vía Los Tiempos, EFE | Alta |
+| Resultado fiscal SPNF | 2015–2025 | % PIB. **2016 corregido a −6,6%** (BCB y FMI Art. IV); 2020–2022 de la investigación previa, no re-verificados | MEFP, BCB, Jubileo | Alta 2023–25, media resto |
+| Deuda externa pública | 2016–2017, 2020–2025 + 2026* | % PIB (la razón depende del PIB que use el BCB) | BCB DEPEX | Media-alta |
+| Gas natural | 2015–2025 | MMm³/d; mezcla producción bruta y fiscalizada según el año | YPFB, UDAPE | Media/baja |
+| Salario mínimo | 2015–2025 + 2026* | Bs/mes (2018–2021 fuente secundaria) | decretos supremos | Alta/Media |
+| Exportaciones | 2016, 2018–2019, 2022–2025 + 2026* (ene–sep) | USD M FOB | IBCE con datos INE | Media |
+| Balanza comercial | 2016, 2018–2019, 2021–2025 + 2026* | USD M (versiones preliminares y revisadas difieren) | IBCE, MDPyEP | Media/baja |
+| Cuenta corriente | 2015–2019, 2021–2025 | % PIB (serie revisada del BCB) | BCB | Alta 2021–24, media resto |
+| Pobreza moderada | 2016–2025 | % (metodología INE 2020, base 2016; **no empalmar** con la serie anterior) | INE vía Jubileo, El País | Media |
+| EMBI | 2022–2025 + 2026* | pb, fin de año | JP Morgan vía Bloomberg Línea, eju.tv | Media |
+| Calificaciones | 2025 y 2026* | rating vigente a fin de año | agencias vía prensa | Alta; **2015–2024 pendiente de verificación** |
+
+**Pendientes** (requieren habilitar bcb.gob.bo, ine.gob.bo, imf.org o api.worldbank.org en la red
+de la sesión): historial de calificaciones 2015–2024, deuda pública total, desempleo urbano anual,
+comercio 2015/2017/2020, EMBI 2015–2021, IPC 2015–2017/2021–2022 y PIB 2017–2020.
+
+---
+
+# Historial · snapshot de jun–jul 2026
+
+## Fuentes y procedencia de los datos · snapshot Bolivia ~20 jun 2026
 
 > **Actualización al 20-jun-2026** (investigación en 3 frentes): paralelo 9,96 / brecha
 > 43,1% (feed diario paralelo.bo); VRD 9,92 (tocó récord >Bs 10 y cedió); **EMBI 576→444**

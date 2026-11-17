@@ -12,45 +12,48 @@ claro/oscuro, tipografía Inter + JetBrains Mono.
 
 ## Estado del proyecto
 
-- [x] **Frontend** — React 18 + TS + Vite + Tailwind. Layout híbrido: tira de 11 KPIs
-  siempre visible + pestañas (Panorama · Bloqueos · Externo & Deuda · Mercados) + footer.
-  Series históricas reales, color direccional (verde=bueno/rojo=malo), tooltips en gráficos.
-  Consume el API con fallback offline.
-- [x] **BDR** — PostgreSQL (`bolivia`): 26 tablas, 6 vistas, 12 enums, 71 índices. Ver [`db/`](db/README.md).
-- [x] **Backend** — API Fastify + `pg` que sirve los módulos A–F. Ver [`server/`](server/README.md).
-- [x] **Datos reales** — snapshot de Bolivia ~20 jun 2026 (ver [`docs/SOURCES.md`](docs/SOURCES.md)).
-- [x] **Históricos reales profundos** — serie fechada por métrica, a profundidad por cadencia
-  (diaria→1 año · mensual→3 años · trimestral/anual→5 años), de fuentes oficiales
-  (BCB/INE/MEFP/YPFB/JPMorgan/Trading Economics + feed diario paralelo.bo). Clic en cualquier
-  indicador, EMBI, bono o commodity abre su modal con histórico + selector de rango. Generadas por
-  [`scripts/build-series.mjs`](scripts/build-series.mjs) → [`src/data/series.ts`](src/data/series.ts).
+- [x] **Datos al 17-nov-2026** — TCO flexible, IPC de octubre, RIN, EMBI, PIB 1S, comercio
+  ene–sep, deuda externa, FMI/BID/BM, 21 noticias reales y agenda 17-nov → 17-dic
+  (procedencia en [`docs/SOURCES.md`](docs/SOURCES.md)).
+- [x] **Capa analítica** — pestaña Análisis: tesis, semáforo de 8 dimensiones, indicadores
+  derivados en vivo ([`src/analytics.ts`](src/analytics.ts)), proyecciones, escenarios 2027 y
+  riesgos; lecturas por pestaña y por KPI ([`src/data/analisis.ts`](src/data/analisis.ts)).
+- [x] **Series 2015→hoy** — pestaña Histórico y vista «2015–hoy» en el modal
+  ([`src/data/historico.ts`](src/data/historico.ts)); calificaciones a fin de año en Mercados.
+- [x] **Interfaz minimalista** — menos ruido y menos texto (ver [`docs/ANALISIS.md`](docs/ANALISIS.md) § 0).
+- [x] **BDR** — PostgreSQL: [`db/schema.sql`](db/schema.sql) + [`db/seed.sql`](db/seed.sql), generado
+  desde `src/data/` con `node db/generate-seed.mjs`. El backend
+  ([Back_TableroBOL](https://github.com/ricardosoriagalvarroguerra/Back_TableroBOL)) la aprovisiona
+  sola al arrancar.
 - [ ] **Ingesta en vivo** — conectores automáticos a las fuentes (BCB / INE / YPFB / ABC / EMBI / RSS).
 
 ## Arquitectura (full-stack)
 
 ```
-React (src/) ──fetch──> Fastify (server/) ──pg──> PostgreSQL (db/ · vistas v_*)
+React (este repo) ──fetch──> Fastify (Back_TableroBOL) ──pg──> PostgreSQL (vistas v_*)
+        │                                                         ▲
+        └── fallback a src/data/ si la API no responde            │
+db/schema.sql + db/seed.sql ──npm run sync:db──> Back_TableroBOL/db ── auto-seed al arrancar
 ```
 
-Correr todo (3 terminales o background):
+Flujo para publicar datos nuevos:
 
 ```bash
-# 1) BDR (una vez)
-psql -d bolivia -f db/schema.sql && node db/generate-seed.mjs && psql -d bolivia -f db/seed.sql
-# 2) API
-cd server && npm install && npm run dev      # :5174
-# 3) Frontend
-npm install && npm run dev                   # :5173
+node db/generate-seed.mjs                  # 1) regenera db/seed.sql desde src/data/
+cd ../Back_TableroBOL && npm run sync:db   # 2) copia schema + seed al backend
+git commit -am "data: …" && git push       # 3) al desplegar, la API aplica el seed nuevo
 ```
 
-Si la API no responde, el frontend usa los datos embebidos (`src/data/mockData.ts`);
-el footer indica el origen («BDR en vivo» / «datos locales»).
+Si la API no responde, el frontend usa los datos embebidos; el encabezado y el pie indican el
+origen («BDR en vivo» / «datos embebidos») y la fecha de corte.
 
 ## Módulos
 
 | ID | Módulo | Descripción |
 |----|--------|-------------|
-| A | Indicadores macro | 11 KPIs con sparkline + modal de **serie histórica profunda real** (diaria 1 año · mensual 3 años · trimestral/anual 5 años) en un **gráfico D3** interactivo (eje temporal real, hover por fecha vía bisector, selector de rango). Charts construidos con D3.js (d3-scale/shape/axis/array). |
+| Z | Análisis | Tesis, semáforo, derivados en vivo, proyecciones, escenarios y riesgos. |
+| H | Histórico | Serie anual 2015→hoy por indicador con promedio y extremos. |
+| A | Indicadores macro | 17 KPIs con sparkline + modal de **serie histórica profunda real** (diaria 1 año · mensual 3 años · trimestral/anual 5 años) en un **gráfico D3** interactivo (eje temporal real, hover por fecha vía bisector, selector de rango). Charts construidos con D3.js (d3-scale/shape/axis/array). |
 | B | Bloqueos × elecciones | Mapa de Bolivia (9 deptos.) con 4 capas: bloqueos, **presidencial 2025** (coropleta por ganador del balotaje), **municipal 2026** y **localidades 2025** (scatter electoral por partido ganador, geocodificado con GeoNames, con **granularidad seleccionable** —departamento/provincia/municipio/localidad— y **carga perezosa** por nivel). 22 puntos reales de bloqueo (ABC) superpuestos + lista + drawer con contexto electoral. **Zoom/paneo tipo canvas** (rueda, arrastre, botones) y tamaño de punto ∝ votos. El cruce muestra que ~91% de los bloqueos caen en departamentos que Paz ganó. |
 | C | Mercados · soberanos | Bonos BOL28/30, EMBI, CDS 5Y, ratings y composición RIN (donut). |
 | D | Feed prioritario | Noticias filtrables por tag, indicador *breaking* y modal de detalle. |
@@ -59,6 +62,7 @@ el footer indica el origen («BDR en vivo» / «datos locales»).
 
 ## Atajos de teclado
 
+- `1`–`7` — cambiar de pestaña
 - `/` — enfocar búsqueda
 - `D` — alternar modo claro/oscuro
 - `R` — refrescar

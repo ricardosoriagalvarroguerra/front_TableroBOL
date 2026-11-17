@@ -42,10 +42,10 @@ function QuoteCard({ k, label, sub, onOpen }: { k?: Kpi; label: string; sub: str
   return (
     <button
       onClick={() => onOpen?.(k)}
-      className="surface rounded-[5px] p-3 text-left flex flex-col hover:ring-accent transition-shadow"
+      className="card p-3 text-left flex flex-col hover:ring-accent transition-shadow"
     >
       <div className="flex items-center justify-between gap-2">
-        <span className="mono text-[9px] uppercase tracking-[0.14em] text-subtle">{label}</span>
+        <span className="eyebrow">{label}</span>
         <Delta value={k.delta} label={k.deltaLabel} sentiment={sent} />
       </div>
       <div className="mt-1.5 flex items-baseline gap-1">
@@ -60,7 +60,7 @@ function QuoteCard({ k, label, sub, onOpen }: { k?: Kpi; label: string; sub: str
 function Metric({ label, value, sub, tone = 'neg' }: { label: string; value: string; sub: string; tone?: Tone }) {
   return (
     <div className="surface-sunk rounded-[4px] px-3 py-2">
-      <div className="mono text-[9px] uppercase tracking-wider text-subtle">{label}</div>
+      <div className="eyebrow">{label}</div>
       <div className={`mono text-[19px] leading-tight mt-0.5 ${toneCls[tone]}`}>{value}</div>
       <div className="mono text-[8px] text-subtle mt-0.5">{sub}</div>
     </div>
@@ -73,7 +73,6 @@ export function CambiarioPanel({ indicadores, onOpen }: CambiarioPanelProps) {
   const oficial = byId['usdbob_oficial'];
   const paralelo = byId['usdbob_paralelo'];
   const brecha = byId['brecha'];
-  const vrd = byId['vrd'];
 
   const dias = RANGES.find((r) => r.k === range)?.d;
   const ofSerie = useMemo(() => recortar(oficial?.history ?? [], dias), [oficial, dias]);
@@ -81,7 +80,7 @@ export function CambiarioPanel({ indicadores, onOpen }: CambiarioPanelProps) {
   const brSerie = useMemo(() => recortar(brecha?.history ?? [], dias), [brecha, dias]);
 
   // métricas de depreciación derivadas de la serie/valor vigente
-  const val = oficial?.value ?? 10.85;
+  const val = oficial?.value ?? 11.67;
   const deprFlex = (val / FLEX_INICIO - 1) * 100;
   const deprFijo = (val / CAMBIARIO.fijoValor - 1) * 100;
   // ritmo semanal medio desde el arranque del régimen (29-jun → última fecha de la serie)
@@ -98,23 +97,22 @@ export function CambiarioPanel({ indicadores, onOpen }: CambiarioPanelProps) {
   const p = CAMBIARIO.presion;
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-3">
       {/* ── Tira de cotizaciones vivas ─────────────────────────────── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <QuoteCard k={oficial} label="Oficial · TCO" sub={`${oficial?.asof ?? ''} · vs fijo +${nf(deprFijo)}%`} onOpen={onOpen} />
-        <QuoteCard k={vrd} label="Referencial venta" sub="tope = TCO + Bs 0,10" onOpen={onOpen} />
         <QuoteCard k={paralelo} label="Paralelo · P2P" sub={`${paralelo?.asof ?? ''} · informal`} onOpen={onOpen} />
-        <QuoteCard k={brecha} label="Brecha oficial/paralelo" sub="antes del blanqueo ~42%" onOpen={onOpen} />
+        <QuoteCard k={brecha} label="Brecha oficial/paralelo" sub="llegó a ~42% antes del régimen flexible" onOpen={onOpen} />
       </div>
 
       {/* ── Cuerpo: hero (izq) + rail (der) ────────────────────────── */}
-      <div className="grid grid-cols-12 gap-2">
+      <div className="grid grid-cols-12 gap-3">
         {/* Columna principal */}
         <div className="col-span-12 lg:col-span-8 flex flex-col gap-2">
           <Panel className="p-3">
             <div className="flex items-start justify-between mb-1">
               <div>
-                <div className="mono text-[11px] uppercase tracking-[0.14em] text-muted">El fin del tipo de cambio fijo</div>
+                <div className="text-[11.5px] text-muted">El fin del tipo de cambio fijo</div>
                 <div className="mono text-[9px] text-subtle mt-0.5">Bs/USD · oficial (TCO) vs paralelo · diario</div>
               </div>
               <div className="flex items-center gap-1">
@@ -135,7 +133,7 @@ export function CambiarioPanel({ indicadores, onOpen }: CambiarioPanelProps) {
               oficial={ofSerie}
               paralelo={paSerie}
               hito={{ f: '2026-06-26', label: '26-jun · fin del TC fijo' }}
-              fmt={(v) => v.toFixed(2)}
+              fmt={(v) => v.toFixed(2).replace('.', ',')}
             />
             <div className="grid grid-cols-3 gap-2 mt-3">
               <Metric label="Desde el blanqueo" value={`+${nf(deprFlex)}%`} sub={`29-jun (${nf(FLEX_INICIO, 2)}) → hoy`} tone="neg" />
@@ -147,7 +145,7 @@ export function CambiarioPanel({ indicadores, onOpen }: CambiarioPanelProps) {
           {/* Cierre de la brecha */}
           <Panel className="p-3">
             <div className="flex items-center justify-between">
-              <div className="mono text-[10px] uppercase tracking-[0.14em] text-muted">Cierre de la brecha · unificación</div>
+              <div className="text-[11px]  text-muted">Cierre de la brecha · unificación</div>
               <div className="mono text-[9px] text-subtle">paralelo / oficial − 1</div>
             </div>
             <div className="flex items-center gap-4 mt-2">
@@ -165,8 +163,7 @@ export function CambiarioPanel({ indicadores, onOpen }: CambiarioPanelProps) {
               </div>
             </div>
             <div className="mono text-[10px] text-muted leading-snug mt-2">
-              El TCO flexible alcanzó al paralelo y borró el premio informal: la brecha colapsó de ~42% a ≈0. Es la
-              <span className="text-fg"> unificación cambiaria de facto</span>, el objetivo declarado de la medida.
+              Con el TCO flexible la brecha pasó de ~42% a una banda de −2% a +3%: unificación cambiaria de facto.
             </div>
           </Panel>
         </div>
@@ -175,16 +172,16 @@ export function CambiarioPanel({ indicadores, onOpen }: CambiarioPanelProps) {
         <div className="col-span-12 lg:col-span-4 flex flex-col gap-2">
           {/* Régimen y reglas */}
           <Panel>
-            <SectionTitle id="RG ·" title="Régimen" right={<span className="text-accent">flexible</span>} />
+            <SectionTitle title="Régimen" right={<span className="text-accent">flexible</span>} />
             <div className="px-3 py-2.5">
               <div className="grid grid-cols-2 gap-2 mb-2">
                 <div className="surface-sunk rounded-[4px] px-2 py-1.5">
-                  <div className="mono text-[8px] uppercase tracking-wider text-subtle">Antes</div>
+                  <div className="eyebrow">Antes</div>
                   <div className="mono text-[15px]">Bs {nf(CAMBIARIO.fijoValor, 2)}</div>
                   <div className="mono text-[8px] text-subtle">fijo · {CAMBIARIO.fijoDesde}</div>
                 </div>
                 <div className="surface-sunk rounded-[4px] px-2 py-1.5">
-                  <div className="mono text-[8px] uppercase tracking-wider text-subtle">Desde</div>
+                  <div className="eyebrow">Desde</div>
                   <div className="mono text-[15px] text-accent">{CAMBIARIO.flexDesde}</div>
                   <div className="mono text-[8px] text-subtle">TCO diario · BCB</div>
                 </div>
@@ -202,7 +199,7 @@ export function CambiarioPanel({ indicadores, onOpen }: CambiarioPanelProps) {
 
           {/* Cronología */}
           <Panel>
-            <SectionTitle id="CR ·" title="Cronología del cambio" />
+            <SectionTitle title="Cronología del cambio" />
             <div className="px-3 py-2">
               {CAMBIARIO.hitos.map((h, i) => (
                 <div key={i} className="flex gap-2.5 py-1.5 border-b border-token last:border-0">
@@ -221,12 +218,12 @@ export function CambiarioPanel({ indicadores, onOpen }: CambiarioPanelProps) {
 
           {/* Presión estructural */}
           <Panel>
-            <SectionTitle id="PR ·" title="Presión estructural" right={<span>RIN · BCB</span>} />
+            <SectionTitle title="Presión estructural" right={<span>RIN · BCB</span>} />
             <div className="px-3 py-2.5">
               <div className="grid grid-cols-2 gap-2">
-                <Metric label="RIN total" value={`$${p.rinTotal.toLocaleString('es-BO')} M`} sub="31-may · ~79% oro" tone="neutral" />
+                <Metric label="RIN total" value={`$${p.rinTotal.toLocaleString('es-BO')} M`} sub="16-oct · ~82% oro" tone="neutral" />
                 <Metric label="Divisas líquidas" value={`$${p.rinLiquidas} M`} sub="lo defendible del TC" tone="neg" />
-                <Metric label="RIN efectiva jul" value={`~$${p.rinEfectivaJul.toLocaleString('es-BO')} M`} sub={`líquidas ~$${p.rinLiquidasJul} M`} tone="neg" />
+                <Metric label="RIN 30-sep" value={`$${p.rinEfectivaJul.toLocaleString('es-BO')} M`} sub={`líquidas $${p.rinLiquidasJul} M`} tone="neutral" />
                 <Metric label="Cobertura divisas" value={p.coberturaDivisas} sub="de importaciones" tone="neg" />
               </div>
               <div className="mono text-[9px] text-subtle leading-snug mt-2">{p.nota}</div>
@@ -237,11 +234,11 @@ export function CambiarioPanel({ indicadores, onOpen }: CambiarioPanelProps) {
         {/* Lectura del economista — ancho completo */}
         <div className="col-span-12">
           <Panel>
-            <SectionTitle id="LE ·" title="Lectura del economista" right={<span>{CAMBIARIO.source}</span>} />
+            <SectionTitle title="Lectura del economista" right={<span>{CAMBIARIO.source}</span>} />
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
               {CAMBIARIO.lectura.map((l, i) => (
                 <div key={i} className="px-3 py-2.5 border-b md:border-r border-token last:border-r-0">
-                  <div className="mono text-[10px] text-accent uppercase tracking-[0.1em] leading-snug mb-1">{l.titulo}</div>
+                  <div className="text-[11px] text-accent  leading-snug mb-1">{l.titulo}</div>
                   <div className="text-[11px] text-muted leading-snug">{l.texto}</div>
                 </div>
               ))}
