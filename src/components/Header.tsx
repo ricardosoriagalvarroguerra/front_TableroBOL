@@ -33,6 +33,10 @@ interface HeaderProps {
   /** Indicadores para la cinta (obsoleto, no se muestra). */
   ticker?: Kpi[];
   source: 'api' | 'mock' | 'loading';
+  /** Cantidad de alertas de nivel alto. */
+  alertas?: number;
+  /** Abre la nota ejecutiva. */
+  onNota?: () => void;
 }
 
 /** Marca: cordillera estilizada (genérica) en ámbar. */
@@ -56,6 +60,8 @@ export function Header({
   now,
   snapshot,
   source,
+  alertas = 0,
+  onNota,
 }: HeaderProps) {
   const t = formatNow(now);
   const origen = source === 'api' ? 'BDR en vivo' : source === 'mock' ? 'datos embebidos' : 'conectando…';
@@ -78,6 +84,9 @@ export function Header({
                 style={{ background: source === 'api' ? 'var(--pos)' : source === 'mock' ? 'var(--accent)' : 'var(--fg-subtle)' }}
               />
               Datos al {snapshot}
+              {alertas > 0 && (
+                <span className="text-neg" title="Alertas de nivel alto (ver Panorama)">· {alertas} alerta{alertas > 1 ? 's' : ''}</span>
+              )}
             </div>
           </div>
         </div>
@@ -103,6 +112,15 @@ export function Header({
 
         {/* acciones */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {onNota && (
+            <button
+              onClick={onNota}
+              title="Nota ejecutiva imprimible [N]"
+              className="h-9 px-3 surface-sunk rounded-[8px] text-[12px] text-muted hover:ring-accent hidden sm:flex items-center"
+            >
+              Nota
+            </button>
+          )}
           <button
             onClick={onRefresh}
             title="Refrescar [R]"

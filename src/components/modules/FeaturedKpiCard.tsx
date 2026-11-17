@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useTheme } from '../../theme';
 import { Delta } from '../primitives/Delta';
+import { Frescura, frescuraTexto } from '../primitives/Frescura';
 import { scaleLinear } from 'd3-scale';
 import { line as d3line, area as d3area, curveMonotoneX } from 'd3-shape';
 import { polarityOf, deltaTone, trendTone } from '../../tone';
@@ -80,7 +81,10 @@ export function FeaturedKpiCard({ k, onClick, band }: FeaturedKpiCardProps) {
         </svg>
         <div className="mt-2 flex items-center justify-between text-[11px] text-subtle">
           <span>{p0 ?? ''}</span>
-                    <span>{pN ?? k.asof}</span>
+                    <span className="flex items-center gap-1.5" title={frescuraTexto(k.fecha, k.periodicidad) ?? undefined}>
+            <Frescura fecha={k.fecha} periodicidad={k.periodicidad} />
+            {pN ?? k.asof}
+          </span>
         </div>
       </div>
     </button>

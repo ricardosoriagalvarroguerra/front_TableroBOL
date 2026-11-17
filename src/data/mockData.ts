@@ -308,10 +308,29 @@ const RAW_KPIS: Kpi[] = [
 // Adjunta a cada KPI su cadencia real (periodicidad) y su SERIE HISTÓRICA fechada
 // real y validada (src/data/series.ts). El sparkline corto de las tarjetas se deriva
 // de esa misma serie, así tarjeta y modal son siempre coherentes.
+// Fecha del último dato de los KPIs sin serie fechada (el resto la toma de la serie).
+const FECHA_DATO: Record<string, string> = {
+  ipc_mensual: '2026-10-31',
+  exportaciones: '2026-09-30',
+  cuenta_corriente: '2025-12-31',
+  pobreza: '2025-12-31',
+  deuda_publica: '2025-12-31',
+  desempleo: '2026-06-30',
+};
+const PERIODICIDAD_EXTRA: Record<string, Kpi['periodicidad']> = {
+  ipc_mensual: 'mensual',
+  exportaciones: 'mensual',
+  cuenta_corriente: 'anual',
+  pobreza: 'anual',
+  deuda_publica: 'anual',
+  desempleo: 'trimestral',
+};
+
 export const KPIS: Kpi[] = RAW_KPIS.map((k) => {
   const h = HISTORY[k.id];
+  k = { ...k, fecha: FECHA_DATO[k.id] ?? h?.[h.length - 1]?.f };
   const an = HISTORICO[k.id];
-  const base = { ...k, periodicidad: PERIODICIDAD[k.id], historico: an?.serie, historicoNota: an?.nota };
+  const base = { ...k, periodicidad: PERIODICIDAD[k.id] ?? PERIODICIDAD_EXTRA[k.id], historico: an?.serie, historicoNota: an?.nota };
   if (h && h.length) return { ...base, history: h, spark: sparkFrom(h) };
   // sin serie fechada: el sparkline usa la serie anual (si existe)
   return !k.spark.length && an ? { ...base, spark: an.serie.map((p) => p.valor) } : base;
@@ -525,4 +544,5 @@ export const FUENTES: Fuente[] = [
   { id: 'p2p', name: 'Paralelo · P2P', latency: 11, status: 'ok', last: '16 nov' },
   { id: 'commodities', name: 'Commodities', latency: 64, status: 'ok', last: '16 nov' },
   { id: 'rate', name: 'Calificadoras', latency: null, status: 'ok', last: 'sep 2026' },
+  { id: 'fmi', name: 'FMI · WEO', latency: null, status: 'ok', last: 'oct 2026' },
 ];

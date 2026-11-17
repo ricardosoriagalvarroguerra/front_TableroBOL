@@ -1,6 +1,7 @@
 import { Panel } from '../primitives/Panel';
 import { Delta } from '../primitives/Delta';
 import { Sparkline } from '../primitives/Sparkline';
+import { Frescura, frescuraTexto } from '../primitives/Frescura';
 import { polarityOf, deltaTone, trendTone } from '../../tone';
 import type { Kpi } from '../../types';
 
@@ -24,9 +25,12 @@ export function KpiGroup({ title, items, onOpen }: KpiGroupProps) {
               key={k.id}
               onClick={() => onOpen && onOpen(k)}
               className="w-full text-left px-4 py-2 row-hover flex-1"
-              title={`${k.asof} · ${k.source}`}
+              title={`${k.asof} · ${k.source}${frescuraTexto(k.fecha, k.periodicidad) ? ` · ${frescuraTexto(k.fecha, k.periodicidad)}` : ''}`}
             >
-              <div className="text-[11px] text-subtle truncate">{k.label}</div>
+              <div className="text-[11px] text-subtle truncate flex items-center gap-1.5">
+                <Frescura fecha={k.fecha} periodicidad={k.periodicidad} />
+                <span className="truncate">{k.label}</span>
+              </div>
               <div className="mt-1 flex items-center gap-1.5">
                 <span className="mono text-[17px] tabular-nums leading-none tracking-[-0.02em] shrink-0">
                   {k.fmt(k.value)}

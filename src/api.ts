@@ -1,7 +1,8 @@
 // Cliente del backend (Fastify). Las respuestas ya vienen con la forma que
 // consumen los componentes; este módulo sólo tipa y centraliza los fetch.
 
-import type { Bloqueo, Mercados, Noticia, Evento, Fuente, Kpi, ExternoData, AnalisisData } from './types';
+import type { Bloqueo, Mercados, Noticia, Evento, Fuente, Kpi, ExternoData, AnalisisData, RegionData } from './types';
+import type { Alerta } from './alertas';
 import { HISTORY, PERIODICIDAD, sparkFrom } from './data/series.ts';
 import { EXTERNO, HISTORICO, MERCADOS } from './data/mockData';
 
@@ -41,8 +42,9 @@ export function toKpi(k: ApiKpi): Kpi {
     source: k.source ?? '',
     fmt: makeFmt(k.id, k.decimales),
     periodicidad: PERIODICIDAD[k.id] ?? k.periodicidad,
-    history: h && h.length ? h : k.history,
-    spark: h && h.length ? sparkFrom(h) : k.spark,
+    // la serie del API refleja la ingesta en vivo; el bundle es el respaldo
+    history: k.history?.length ? k.history : h,
+    spark: k.history?.length ? sparkFrom(k.history) : h && h.length ? sparkFrom(h) : k.spark,
     // serie anual 2015→hoy: la del API si viene, si no la del bundle
     historico: k.historico?.length ? k.historico : HISTORICO[k.id]?.serie,
     historicoNota: k.historicoNota ?? HISTORICO[k.id]?.nota,
@@ -80,4 +82,6 @@ export const api = {
   eventos: (signal?: AbortSignal) => get<Evento[]>('/api/eventos', signal),
   fuentes: (signal?: AbortSignal) => get<Fuente[]>('/api/fuentes', signal),
   analisis: (signal?: AbortSignal) => get<AnalisisData>('/api/analisis', signal),
+  region: (signal?: AbortSignal) => get<RegionData>('/api/region', signal),
+  alertas: (signal?: AbortSignal) => get<Alerta[]>('/api/alertas', signal),
 };

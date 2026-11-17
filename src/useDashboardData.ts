@@ -4,7 +4,9 @@
 import { useEffect, useState } from 'react';
 import { api, toKpi } from './api';
 import { KPIS, BLOQUEOS, BLOQUEOS_INFO, MERCADOS, EXTERNO, NOTICIAS, EVENTOS, FUENTES, ANALISIS } from './data/mockData';
-import type { Kpi, Bloqueo, Mercados, ExternoData, Noticia, Evento, Fuente, AnalisisData } from './types';
+import type { Kpi, Bloqueo, Mercados, ExternoData, Noticia, Evento, Fuente, AnalisisData, RegionData } from './types';
+import { REGION } from './data/region';
+import { evaluarAlertas, type Alerta } from './alertas';
 
 export interface DashboardData {
   indicadores: Kpi[];
@@ -16,6 +18,8 @@ export interface DashboardData {
   eventos: Evento[];
   fuentes: Fuente[];
   analisis: AnalisisData;
+  region: RegionData;
+  alertas: Alerta[];
 }
 
 function fromMock(): DashboardData {
@@ -35,7 +39,17 @@ function fromMock(): DashboardData {
     eventos: EVENTOS,
     fuentes: FUENTES,
     analisis: ANALISIS,
+    region: REGION,
+    alertas: alertasLocales(KPIS, MERCADOS.reservas.oro),
   };
+}
+
+/** Reglas de alerta evaluadas en el cliente (mismo motor que el backend). */
+function alertasLocales(kpis: Kpi[], oroPct?: number): Alerta[] {
+  const map = Object.fromEntries(
+    kpis.map((k) => [k.id, { id: k.id, label: k.label, value: k.value, delta: k.delta, fecha: k.fecha, periodicidad: k.periodicidad }]),
+  );
+  return evaluarAlertas({ kpis: map, oroPct, hoy: new Date() });
 }
 
 export type DataSource = 'api' | 'mock' | 'loading';
@@ -62,8 +76,14 @@ export function useDashboardData(): DashboardData & { source: DataSource; reload
         // El análisis es opcional en el backend: si el endpoint no existe (API
         // anterior), se conserva la capa analítica embebida.
         const analisis = await api.analisis(ctrl.signal).catch(() => ANALISIS);
+        // región y alertas son opcionales: con un API anterior se usan el bundle y las reglas locales
+        const kpisApi = indicadores.map(toKpi);
+        const [region, alertas] = await Promise.all([
+          api.region(ctrl.signal).then((r) => (Object.keys(r.datos ?? {}).length ? r : REGION)).catch(() => REGION),
+          api.alertas(ctrl.signal).catch(() => alertasLocales(kpisApi, mercados.reservas?.oro)),
+        ]);
         setData({
-          indicadores: indicadores.map(toKpi),
+          indicadores: kpisApi,
           bloqueos: bloqueos.bloqueos,
           resumen: bloqueos.resumen,
           mercados,
@@ -72,6 +92,8 @@ export function useDashboardData(): DashboardData & { source: DataSource; reload
           eventos,
           fuentes,
           analisis,
+          region,
+          alertas,
         });
         setSource('api');
       } catch (err) {

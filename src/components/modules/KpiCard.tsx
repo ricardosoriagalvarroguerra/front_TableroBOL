@@ -1,5 +1,6 @@
 import { Delta } from '../primitives/Delta';
 import { Sparkline } from '../primitives/Sparkline';
+import { Frescura } from '../primitives/Frescura';
 import { polarityOf, deltaTone, trendTone } from '../../tone';
 import type { Kpi } from '../../types';
 
@@ -37,7 +38,7 @@ export function KpiCard({ k, onClick }: KpiCardProps) {
       )}
       <div className="mt-auto pt-2 flex items-end justify-between">
         <Sparkline data={k.spark} sentiment={trendTone(pol, k.spark)} width={120} height={22} />
-        <span className="text-[11px] text-subtle">{k.asof}</span>
+        <span className="text-[11px] text-subtle flex items-center gap-1.5"><Frescura fecha={k.fecha} periodicidad={k.periodicidad} />{k.asof}</span>
       </div>
     </button>
   );
