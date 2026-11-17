@@ -5,5 +5,5 @@ export const PAIS = {
   nombre: 'Bolivia',
   tablero: 'Tablero BOL',
   /** País del tablero hermano, resaltado en el comparador regional. */
-  hermano: { iso: 'URY', nombre: 'Uruguay', url: 'https://front-tablero-uru.up.railway.app' },
+  hermano: { iso: 'URY', nombre: 'Uruguay', url: 'https://fronttablerouru-production.up.railway.app' },
 } as const;

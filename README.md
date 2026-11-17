@@ -25,10 +25,12 @@ claro/oscuro, tipografía Inter + JetBrains Mono.
   desde `src/data/` con `node db/generate-seed.mjs`. El backend
   ([Back_TableroBOL](https://github.com/ricardosoriagalvarroguerra/Back_TableroBOL)) la aprovisiona
   sola al arrancar.
-- [x] **Tablero vivo (v0.9)** — ingesta automática (TCO del BCB, FMI WEO), pestaña **Región**
+- [x] **Tablero vivo (v0.9)** — ingesta automática de 8 fuentes (BCB, Binance P2P, INE IPC y
+  comercio, EMBI del BCRD, commodities, noticias RSS, FMI WEO), pestaña **Región**
   (comparador con 8 países de Sudamérica), **alertas** por reglas explícitas, **frescura** de cada
   dato y **nota ejecutiva** imprimible ([`docs/ANALISIS.md`](docs/ANALISIS.md) § 0.5).
-- [ ] **Más conectores** — INE (IPC, comercio), YPFB, ABC, EMBI y RSS de noticias.
+- [ ] **Sin conector posible por ahora** — ABC (captcha, no accesible desde fuera de Bolivia) y
+  producción de gas de YPFB (sólo boletines en PDF).
 
 ## Arquitectura (full-stack)
 

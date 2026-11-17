@@ -75,8 +75,9 @@ export function MercadosPanel({ data, onOpen }: MercadosPanelProps) {
                 id: 'embi', label: 'EMBI Bolivia', value: data.embi.value, unit: 'pb',
                 fmt: (v) => v.toLocaleString('es-BO'), delta: data.embi.chg,
                 deltaLabel: `${data.embi.chg > 0 ? '+' : ''}${data.embi.chg} pb`, sentiment: 'neg',
-                source: 'JPMorgan · Bloomberg Línea / Invenómica', asof: '19 jun',
+                source: 'JP Morgan · serie del BCRD', asof: data.embi.fecha ? `${Number(data.embi.fecha.slice(8))}/${data.embi.fecha.slice(5, 7)}` : '2 nov',
                 def: 'EMBI (riesgo país, JPMorgan): spread soberano en puntos básicos. Cierre de may-2026 en 576 pb (rango del mes 408–639).',
+                history: data.embi.history,
               }),
             )
           }

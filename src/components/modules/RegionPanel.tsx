@@ -136,6 +136,9 @@ function Trayectoria({ data, ind }: { data: RegionData; ind: string }) {
         <span className="flex items-center gap-1.5"><span className="w-3 h-[2px]" style={{ background: COLOR_PAIS }} />{PAIS.nombre}</span>
         <span className="flex items-center gap-1.5"><span className="w-3 h-[2px]" style={{ background: COLOR_HERMANO }} />{PAIS.hermano.nombre}</span>
         <span className="flex items-center gap-1.5"><span className="w-3 border-t border-dashed" style={{ borderColor: 'var(--fg-subtle)' }} />Mediana de 9 países</span>
+        <a href={PAIS.hermano.url} target="_blank" rel="noreferrer" className="ml-auto text-info hover:underline underline-offset-4">
+          Tablero {PAIS.hermano.nombre} →
+        </a>
       </div>
     </div>
   );

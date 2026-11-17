@@ -33,7 +33,7 @@ export function CommoditiesPanel({ data, onOpen }: CommoditiesPanelProps) {
                   delta: c.chgMensual ?? 0,
                   deltaLabel: c.chgMensual != null ? `${c.chgMensual > 0 ? '+' : ''}${c.chgMensual.toFixed(1)}%` : 's/d',
                   sentiment: c.polarity === 'none' || c.chgMensual == null ? 'neutral' : deltaTone(c.polarity, c.chgMensual),
-                  source: c.source, asof: c.asof,
+                  source: c.source, asof: c.asof, history: c.history,
                   def: `${c.label} (${c.unit}). Var. mensual ${c.chgMensual ?? 's/d'}% · anual ${c.chgAnual ?? 's/d'}%.${c.nota ? ' ' + c.nota : ''}`,
                 }),
               )

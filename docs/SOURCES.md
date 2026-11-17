@@ -8,6 +8,28 @@ cifras:** lo que no se pudo corroborar queda como *s/d* o se omite, y se indica 
 Confianza: **alta** = varias fuentes coinciden o la nota oficial está indexada; **media** = una o
 dos fuentes; **baja** = indirecta o en conflicto.
 
+## Fuentes automáticas (ingesta del backend, cada 6 h)
+
+Desde la v0.9.1 el backend (Back_TableroBOL, `src/ingest/`) actualiza solo estos datos; el seed
+de este repo es el punto de partida y el respaldo embebido.
+
+| Dato | Fuente primaria | Frecuencia de la fuente |
+|---|---|---|
+| Dólar oficial (TCO) | [BCB · última cotización](https://www.bcb.gob.bo/bcb_tco_publico_ultima_cotizacion.php) | diaria |
+| Dólar paralelo | Binance P2P, USDT/BOB (mediana de los 10 primeros avisos) | continua |
+| Brecha | derivada: paralelo ÷ TCO − 1 | diaria |
+| IPC a 12 meses y mensual | [INE · IPC base 2016, cuadro por división](https://www.ine.gob.bo/index.php/nacional/) | mensual (≈5 de cada mes) |
+| Exportaciones, importaciones, balanza, export. de gas | INE · cuadros mensuales de exportaciones e importaciones | mensual (≈fin de mes, con 1 mes de rezago) |
+| EMBI Bolivia | JP Morgan vía la [serie histórica del BCRD](https://cdn.bancentral.gov.do/documents/entorno-internacional/documents/Serie_Historica_Spread_del_EMBI.xlsx) | diaria (hábil) |
+| Oro, plata, soya, Henry Hub | futuros COMEX/CBOT/NYMEX vía Yahoo Finance | diaria |
+| Estaño, zinc | LME cash-settlement vía Westmetall | diaria (hábil) |
+| Noticias | Google News RSS (búsquedas sobre Bolivia), ABC y eju.tv | continua |
+| Comparador regional | FMI, WEO (API DataMapper) | semestral (abr/oct) |
+
+**Siguen curados a mano:** RIN, deuda, fiscal, PIB trimestral, gas (producción), bloqueos (ABC),
+calificaciones, bonos, agenda y la capa analítica. La ABC no es accesible desde fuera de Bolivia
+(captcha) y YPFB no publica la producción en formato de datos.
+
 ## Actualización al 17-nov-2026
 
 ### Indicadores (tira superior)
@@ -88,14 +110,14 @@ IPC y comercio exterior salen directamente de los cuadros del INE.
 | Salario mínimo | 2015–2025 + 2026* | Bs/mes (2018–2021 fuente secundaria) | decretos supremos | Alta/Media |
 | Cuenta corriente | 2015–2019, 2021–2025 | % PIB (serie revisada del BCB) | BCB | Alta 2021–24, media resto |
 | Pobreza moderada | 2016–2025 | % (metodología INE 2020, base 2016; **no empalmar** con la serie anterior) | INE vía Jubileo, El País | Media |
-| EMBI | 2022–2025 + 2026* | pb, fin de año | JP Morgan vía Bloomberg Línea, eju.tv | Media |
+| EMBI | 2015–2025 + 2026* | pb, último día hábil del año | JP Morgan vía la serie del BCRD (coincide con los cierres 2022–2025 citados por prensa) | Alta |
 | Calificaciones | 2015–2025 + 2026* | rating vigente a fin de año | S&P: [Trading Economics](https://tradingeconomics.com/bolivia/rating); Moody's y Fitch: [countryeconomy.com](https://countryeconomy.com/ratings/bolivia), contrastado con las acciones de 2023–2026 de prensa | Alta (S&P) / Media (Moody's, Fitch) |
 
 **Correcciones respecto de la versión anterior:** exportaciones 2016/2022/2024 y saldo comercial
 2015–2025 reemplazados por los cuadros del INE (la versión previa venía de IBCE preliminar y
 tenía 2024 confundido con 2015); PIB 2017–2020 e IPC 2015–2017/2021–2022 completados.
 
-**Pendientes:** EMBI 2015–2021 (dato propietario de JP Morgan), Fitch 2024 (countryeconomy no
+**Pendientes:** Fitch 2024 (countryeconomy no
 registra acciones después de mar-2023), cuenta corriente 2020, deuda externa 2015/2018/2019 y
 2022, resultado fiscal 2020–2022 contra la fuente MEFP. El Banco Mundial (api.worldbank.org) no
 respondió desde la sesión.
