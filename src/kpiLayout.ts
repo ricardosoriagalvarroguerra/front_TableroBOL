@@ -17,4 +17,4 @@ export const GROUPS: KpiGroupDef[] = [
 ];
 
 /** Indicadores que sólo se muestran en la pestaña Histórico (no en la tira). */
-export const SOLO_HISTORICO = ['vrd', 'brecha_vrd', 'cuenta_corriente', 'desempleo', 'pobreza'];
+export const SOLO_HISTORICO = ['cuenta_corriente', 'deuda_publica', 'desempleo', 'pobreza'];

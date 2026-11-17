@@ -79,7 +79,7 @@ export const ANALISIS: AnalisisData = {
   ],
   lecturas: {
     historico:
-      'Una década en una línea: las reservas pasaron de USD 13.056 M (2015) a 1.709 M (2023) con el tipo de cambio fijo, y el déficit fiscal nunca bajó de 6,6% del PIB. El quiebre de 2026 (TCO flexible y FMI) es la respuesta a ese desgaste. Años sin dato verificado se omiten.',
+      'Una década en una línea: las reservas pasaron de USD 13.056 M (2015) a 1.709 M (2023) con el tipo de cambio fijo, y el déficit fiscal nunca bajó de 6,6% del PIB. La deuda pública total pasó de 34% a 83% del PIB y la nota soberana cayó de BB a CCC−. El quiebre de 2026 (TCO flexible y FMI) es la respuesta a ese desgaste.',
     cambiario:
       'El régimen flexible cumplió su objetivo de unificar el mercado: la brecha pasó de ~42% a cerca de 0. Septiembre mostró la fragilidad (12,64 → 9,83 en ocho días); desde octubre el TCO se mueve en 11,6–12,2.',
     bloqueos:
@@ -107,5 +107,7 @@ export const ANALISIS: AnalisisData = {
     balanza_saldo: 'Doce meses seguidos de superávit (oct-25 → sep-26); las importaciones contenidas también reflejan la recesión.',
     cuenta_corriente: 'El giro a superávit en 2026 es por el ajuste de importaciones más que por un cambio estructural.',
     pobreza: 'La inflación de 2025 revirtió una década de reducción de pobreza.',
+    deuda_publica: 'La deuda que preocupa es la interna con el BCB: el FMI la ve cerca de 100% del PIB en 2026.',
+    desempleo: 'El desempleo abierto es bajo porque la informalidad absorbe el ajuste; no refleja la recesión.',
   },
 };

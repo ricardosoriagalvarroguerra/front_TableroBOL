@@ -53,7 +53,7 @@ origen («BDR en vivo» / «datos embebidos») y la fecha de corte.
 |----|--------|-------------|
 | Z | Análisis | Tesis, semáforo, derivados en vivo, proyecciones, escenarios y riesgos. |
 | H | Histórico | Serie anual 2015→hoy por indicador con promedio y extremos. |
-| A | Indicadores macro | 17 KPIs con sparkline + modal de **serie histórica profunda real** (diaria 1 año · mensual 3 años · trimestral/anual 5 años) en un **gráfico D3** interactivo (eje temporal real, hover por fecha vía bisector, selector de rango). Charts construidos con D3.js (d3-scale/shape/axis/array). |
+| A | Indicadores macro | 19 KPIs con sparkline + modal de **serie histórica profunda real** (diaria 1 año · mensual 3 años · trimestral/anual 5 años) en un **gráfico D3** interactivo (eje temporal real, hover por fecha vía bisector, selector de rango). Charts construidos con D3.js (d3-scale/shape/axis/array). |
 | B | Bloqueos × elecciones | Mapa de Bolivia (9 deptos.) con 4 capas: bloqueos, **presidencial 2025** (coropleta por ganador del balotaje), **municipal 2026** y **localidades 2025** (scatter electoral por partido ganador, geocodificado con GeoNames, con **granularidad seleccionable** —departamento/provincia/municipio/localidad— y **carga perezosa** por nivel). 22 puntos reales de bloqueo (ABC) superpuestos + lista + drawer con contexto electoral. **Zoom/paneo tipo canvas** (rueda, arrastre, botones) y tamaño de punto ∝ votos. El cruce muestra que ~91% de los bloqueos caen en departamentos que Paz ganó. |
 | C | Mercados · soberanos | Bonos BOL28/30, EMBI, CDS 5Y, ratings y composición RIN (donut). |
 | D | Feed prioritario | Noticias filtrables por tag, indicador *breaking* y modal de detalle. |

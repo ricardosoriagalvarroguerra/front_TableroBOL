@@ -57,7 +57,7 @@ export function RatingsPanel({ data, embi = [] }: RatingsPanelProps) {
           </tbody>
         </table>
         <div className="mt-3 text-[11px] text-subtle">
-          2026* = vigente. Las acciones de 2015–2024 están pendientes de verificación contra los comunicados de cada agencia.
+          2026* = vigente · — = sin dato verificado. S&P: Trading Economics; Moody’s y Fitch: countryeconomy.com.
         </div>
       </div>
     </Panel>
